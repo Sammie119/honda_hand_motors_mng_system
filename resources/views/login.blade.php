@@ -24,17 +24,26 @@
                         <h4 class="mt-1 mb-3 pb-1">Welcome</h4>
                       </div>
       
-                      <form action="#" method="POST" autocomplete="off">
+                      <form action="login" method="POST" autocomplete="off">
                         @csrf
                         <p class="text-center">Honda Hand Motors Management System</p>
-      
+                        @if (Session::has('error'))
+                          <div class="alert alert-danger" role="alert">
+                            {{ Session::get('error') }}
+                          </div>
+                        @endif
+                        @if (Session::has('auth'))
+                          <div class="alert alert-danger" role="alert">
+                            {{ Session::get('auth') }}
+                          </div>
+                        @endif
                         <div class="form-outline form-floating mb-2">
-                            <input class="form-control" name="dropdown_name" type="text" required placeholder=" " autofocus>
+                            <input class="form-control" name="username" type="text" required placeholder=" " autofocus>
                             <label class="form-label" for="form2Example11">Username</label>
                         </div>
 
                         <div class="form-outline form-floating mb-2">
-                            <input type="password" id="form2Example22" class="form-control" required placeholder=" " >
+                            <input type="password" id="form2Example22" name="password" class="form-control" required placeholder=" " >
                             <label class="form-label" for="form2Example22">Password</label>
                         </div>
       

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FormRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +15,47 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
+// Route::get('/', function () {
+//     return view('login');
+// });
+
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/', 'index');
+    Route::post('login', 'postLogin');
+    Route::get('logout', 'logout')->name('logout');
 });
 
-Route::get('/home', function () {
-    return view('home');
+Route::middleware(['admin'])->group(function () {
+
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('dashboard', 'adminHome')->name('dashboard');
+        Route::get('user_list', 'usersList')->name('user_list');
+        Route::post('register_user', 'postRegistration');
+        Route::get('delete_user/{id}', 'deleteUser');
+
+    });
+
+});
+
+Route::middleware(['user_check'])->group(function () {
+
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('home', 'userHome')->name('home');
+        Route::post('user_profile', 'profileStore')->name('user_profile');
+    });
+
+});
+
+Route::controller(FormRequestController::class)->group(function () {
+    // Modal Create Route
+    Route::get('create-modal/{id}', 'getCreateModalData');
+
+    // Modal Edit Route
+    Route::get('edit-modal/{form}/{id}', 'getEditModalData');
+
+    // Modal view Route
+    Route::get('view-modal/{form}/{id}', 'getViewModalData');
+
+    // Modal delete Route
+    Route::get('delete-modal/{data}/{id}', 'getDeleteModalData');
 });

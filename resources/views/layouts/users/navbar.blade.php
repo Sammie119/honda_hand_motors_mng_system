@@ -32,15 +32,17 @@
             {{-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> --}}
             <div class="dropdown">
             <button class="btn btn-outline-dark dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown button
+                {{ Auth()->user()->name }}
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#getProfile" data-bs-toggle="modal">Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Logout</a></li>
+                <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
             </ul>
             </div>
         </div>
         </div>
     </div>
 </nav>
+
+@include('user_profile')
