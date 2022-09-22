@@ -4,11 +4,14 @@
 
 @section('content')
 
-  <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
+  <div class="d-flex justify-content-between align-items-center p-2 my-3 text-white bg-secondary rounded shadow-sm">
     <div class="lh-1">
-    <h1 class="h6 mb-0 text-white lh-1">Page Title</h1>
+      <h1 class="h5 mb-0 text-white lh-1">Page Title</h1>
     </div>
+    <button class="btn btn-outline-dark btn-sm float-right">Add New</button>
   </div>
+
+  @include('includes.error_display')
 
   <div class="my-3 p-3 bg-body rounded shadow-sm">
     <table class="table table-striped table-hover">

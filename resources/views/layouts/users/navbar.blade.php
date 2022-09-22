@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="{{ asset('public/assets/images/honda.logo.png') }}" height="30px" width="35px" alt="logo"></a>
+        <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('public/assets/images/honda.logo.png') }}" height="30px" width="35px" alt="logo"></a>
         <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
@@ -8,7 +8,7 @@
         <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
+            <a class="nav-link {{ request()->is('home') ? 'active' : '' }}" aria-current="page" href="{{ route('home') }}">Home</a>
             </li>
             <li class="nav-item">
             <a class="nav-link" href="#">Notifications</a>
@@ -35,7 +35,7 @@
                 {{ Auth()->user()->name }}
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#getProfile" data-bs-toggle="modal">Profile</a></li>
+                <li><a class="dropdown-item profile" href="#getProfile" data-bs-toggle="modal">Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
             </ul>
@@ -44,5 +44,3 @@
         </div>
     </div>
 </nav>
-
-@include('user_profile')

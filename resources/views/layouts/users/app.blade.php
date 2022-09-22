@@ -24,10 +24,24 @@
             
         </main>
 
+        @include('modals.user_profile')
 
         <script src="{{ asset('public/assets/bootstrap/bootstrap.bundle.5.2.1.min.js') }}"></script>
         <script src="{{ asset('public/assets/js/jquery.min.js') }}"></script>
         <script src="{{ asset('public/assets/js/alert/toastr_alert.js') }}"></script>
+
+        <script>
+            $(document).on('click', '.profile', function(){
+                $('.modal-title').text('User Profile');
+      
+                // var editModal=<?=Auth()->user()->user_id?>;
+                $.get('create-modal/user_profile', function(result) {
+                    
+                    $(".modal-body").html(result);
+                    
+                })
+            });
+          </script>
 
         @stack('scripts')
 

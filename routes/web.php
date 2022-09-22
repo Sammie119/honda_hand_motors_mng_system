@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomSetupController;
 use App\Http\Controllers\FormRequestController;
+use App\Http\Controllers\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +37,19 @@ Route::middleware(['admin'])->group(function () {
 
     });
 
+    Route::controller(CustomSetupController::class)->group(function () {
+        Route::get('custom_setups', 'index')->name('custom_setups');
+        Route::post('store_custom', 'store');
+        Route::get('delete_custom/{id}', 'destroy');
+
+    });
+
+    Route::controller(StaffController::class)->group(function () {
+        Route::get('staffs', 'index')->name('staffs');
+        Route::post('store_staff', 'store');
+        Route::get('delete_staff/{id}', 'destroy');
+
+    });
 });
 
 Route::middleware(['user_check'])->group(function () {

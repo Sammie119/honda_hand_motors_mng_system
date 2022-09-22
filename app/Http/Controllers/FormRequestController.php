@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CustomSetup;
+use App\Models\Staff;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,6 +14,18 @@ class FormRequestController extends Controller
         switch ($data) {
             case 'new_user':
                 return view('forms.input-forms.user_form');
+                break;
+
+            case 'user_profile':
+                return view('forms.input-forms.user_profile');
+                break;
+
+            case 'new_custom':
+                return view('forms.input-forms.custom_type_form');
+                break;
+
+            case 'new_staff':
+                return view('forms.input-forms.staff_form');
                 break;
 
             default:
@@ -26,6 +40,16 @@ class FormRequestController extends Controller
             case 'edit_user':
                 $user = User::find($id);
                 return view('forms.input-forms.user_form', ['user' => $user]);
+                break;
+
+            case 'edit_custom':
+                $custom = CustomSetup::find($id);
+                return view('forms.input-forms.custom_type_form', ['custom' => $custom]);
+                break;
+
+            case 'edit_staff':
+                $staff = Staff::find($id);
+                return view('forms.input-forms.staff_form', ['staff' => $staff]);
                 break;
         
             default:
@@ -54,6 +78,14 @@ class FormRequestController extends Controller
         switch ($data) {
             case 'delete_user':
                 return view('forms.delete-forms.delete_user', ['id' => $id]);
+                break;
+
+            case 'delete_custom':
+                return view('forms.delete-forms.delete_custom', ['id' => $id]);
+                break;
+
+            case 'delete_staff':
+                return view('forms.delete-forms.delete_staff', ['id' => $id]);
                 break;
         
             default:
