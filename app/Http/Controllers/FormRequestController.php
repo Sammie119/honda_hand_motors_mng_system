@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\CustomSetup;
 use App\Models\Staff;
 use App\Models\User;
@@ -28,6 +29,10 @@ class FormRequestController extends Controller
                 return view('forms.input-forms.staff_form');
                 break;
 
+            case 'new_customer':
+                return view('forms.input-forms.customer_form');
+                break;
+
             default:
                 return "No Form Selected";
                 break;
@@ -50,6 +55,11 @@ class FormRequestController extends Controller
             case 'edit_staff':
                 $staff = Staff::find($id);
                 return view('forms.input-forms.staff_form', ['staff' => $staff]);
+                break;
+
+            case 'edit_customer':
+                $customer = Customer::find($id);
+                return view('forms.input-forms.customer_form', ['customer' => $customer]);
                 break;
         
             default:
@@ -86,6 +96,10 @@ class FormRequestController extends Controller
 
             case 'delete_staff':
                 return view('forms.delete-forms.delete_staff', ['id' => $id]);
+                break;
+
+            case 'delete_customer':
+                return view('forms.delete-forms.delete_customer', ['id' => $id]);
                 break;
         
             default:

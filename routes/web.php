@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomSetupController;
 use App\Http\Controllers\FormRequestController;
 use App\Http\Controllers\StaffController;
@@ -57,6 +58,13 @@ Route::middleware(['user_check'])->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::get('home', 'userHome')->name('home');
         Route::post('user_profile', 'profileStore')->name('user_profile');
+    });
+
+    Route::controller(CustomerController::class)->group(function () {
+        Route::get('customers', 'index')->name('customers');
+        Route::post('store_customer', 'store');
+        Route::get('delete_customer/{id}', 'destroy');
+
     });
 
 });

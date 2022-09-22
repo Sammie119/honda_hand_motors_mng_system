@@ -16,7 +16,19 @@
     </head>
     <body class="bg-light">
         
-        @include('layouts.users.navbar')
+        @switch(Auth()->user()->department)
+            @case('Services')
+                @include('layouts.users.navbar-services')
+                @break
+
+            @case('Stores')
+                @include('layouts.users.navbar-stores')
+                @break
+        
+            @default
+                <h3>No Department Seleted</h3>
+        @endswitch
+        
 
         <main class="container">
 
