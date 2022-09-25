@@ -17,6 +17,9 @@
                     <a class="nav-link {{ request()->is('service_transactions') ? 'active' : '' }}" href="{{ route('service_transactions') }}">Transactions</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {{ request()->is('rents') ? 'active' : '' }}" href="{{ route('rents') }}">Rents</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ request()->is('customers') ? 'active' : '' }}" href="{{ route('customers') }}">Customers</a>
                 </li>
                 <li class="nav-item">

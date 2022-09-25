@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomSetupController;
 use App\Http\Controllers\FormRequestController;
 use App\Http\Controllers\GetAjaxRequestController;
+use App\Http\Controllers\RentController;
 use App\Http\Controllers\StaffController;
 
 /*
@@ -76,6 +77,13 @@ Route::middleware(['user_check'])->group(function () {
         Route::post('store_service', 'store');
         Route::post('service_payment', 'servicePayment');
         Route::get('delete_service/{id}', 'destroy');
+
+    });
+
+    Route::controller(RentController::class)->group(function () {
+        Route::get('rents', 'index')->name('rents');
+        Route::post('store_rent', 'store');
+        Route::get('delete_rent/{id}', 'destroy');
 
     });
 

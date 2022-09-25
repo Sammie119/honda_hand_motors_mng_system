@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CarServiceRequest;
+use App\Models\Rent;
+use App\Models\User;
+use App\Models\Staff;
 use App\Models\Customer;
 use App\Models\CustomSetup;
-use App\Models\Staff;
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\CarServiceRequest;
 
 class FormRequestController extends Controller
 {
@@ -36,6 +37,10 @@ class FormRequestController extends Controller
 
             case 'new_service':
                 return view('forms.input-forms.service_request_form');
+                break;
+
+            case 'new_rent':
+                return view('forms.input-forms.rent_form');
                 break;
 
             default:
@@ -91,6 +96,11 @@ class FormRequestController extends Controller
                 $customer = Customer::where('car_no', $service->car_no)->first();
                 return view('forms.input-forms.service_payment_form', ['service' => $service, 'customer' => $customer, 'amount' => $amount]);
                 break;
+
+            case 'edit_rent':
+                $rent = Rent::find($id);
+                return view('forms.input-forms.rent_form', ['rent' => $rent]);
+                break;
         
             default:
                 return "No Form Selected";
@@ -134,6 +144,10 @@ class FormRequestController extends Controller
 
             case 'delete_service':
                 return view('forms.delete-forms.delete_service', ['id' => $id]);
+                break;
+
+            case 'delete_rent':
+                return view('forms.delete-forms.delete_rent', ['id' => $id]);
                 break;
         
             default:
