@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CarServiceRequest;
 use App\Models\Customer;
 use App\Models\CustomSetup;
 use App\Models\Staff;
@@ -33,6 +34,10 @@ class FormRequestController extends Controller
                 return view('forms.input-forms.customer_form');
                 break;
 
+            case 'new_service':
+                return view('forms.input-forms.service_request_form');
+                break;
+
             default:
                 return "No Form Selected";
                 break;
@@ -61,6 +66,31 @@ class FormRequestController extends Controller
                 $customer = Customer::find($id);
                 return view('forms.input-forms.customer_form', ['customer' => $customer]);
                 break;
+
+            case 'edit_service':
+                $service = CarServiceRequest::find($id);
+                $customer = Customer::where('car_no', $service->car_no)->first();
+                return view('forms.input-forms.service_request_form', ['service' => $service, 'customer' => $customer]);
+                break;
+
+            case 'service_payment':
+                $service = CarServiceRequest::selectRaw("customer_id, car_no, fault, ser_charge, engineer, sum(amount_paid) as amount_paid, service_date, service_no")
+                            ->where('service_no', $id)
+                            ->groupBy('customer_id', 'car_no', 'ser_charge', 'engineer', 'fault', 'service_date', 'service_no')
+                            ->first();
+                $customer = Customer::where('car_no', $service->car_no)->first();
+                return view('forms.input-forms.service_payment_form', ['service' => $service, 'customer' => $customer]);
+                break;
+
+            case 'edit_service_payment':
+                $amount = CarServiceRequest::select('amount_paid', 'service_no', 'service_id', 'updated_at')->where('service_id', $id)->first();
+                $service = CarServiceRequest::selectRaw("customer_id, car_no, fault, ser_charge, engineer, sum(amount_paid) as amount_paid, service_date, service_no")
+                            ->where('service_no', $amount->service_no)
+                            ->groupBy('customer_id', 'car_no', 'ser_charge', 'engineer', 'fault', 'service_date', 'service_no')
+                            ->first();
+                $customer = Customer::where('car_no', $service->car_no)->first();
+                return view('forms.input-forms.service_payment_form', ['service' => $service, 'customer' => $customer, 'amount' => $amount]);
+                break;
         
             default:
                 return "No Form Selected";
@@ -72,9 +102,9 @@ class FormRequestController extends Controller
    public function getViewModalData($data, $id)
    {
         switch ($data) {
-            case 'delete_user':
-                $user = User::find($id);
-                return view('forms.view-forms.gallery_view', ['user' => $user]);
+            case 'view_service':
+                $services = CarServiceRequest::where('service_no', $id)->get();
+                return view('forms.view-data.service_payment', ['services' => $services]);
                 break;
         
             default:
@@ -100,6 +130,10 @@ class FormRequestController extends Controller
 
             case 'delete_customer':
                 return view('forms.delete-forms.delete_customer', ['id' => $id]);
+                break;
+
+            case 'delete_service':
+                return view('forms.delete-forms.delete_service', ['id' => $id]);
                 break;
         
             default:

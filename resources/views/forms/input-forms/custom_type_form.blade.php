@@ -14,8 +14,9 @@
             <div class="form-floating">
                 <select class="form-control" name="custom_type" required >
                     <option value="" disabled selected>Custom Type</option>
-                    <option value="Porfolio" @if(isset($custom) && ($custom->custom_type === 'Porfolio')) selected @endif >Porfolio</option>
-                    
+                    <option value="Portfolio" @if(isset($custom) && ($custom->custom_type === 'Portfolio')) selected @endif >Portfolio</option>
+                    <option value="Item In Car" @if(isset($custom) && ($custom->custom_type === 'Item In Car')) selected @endif >Item In Car</option>
+            
                 </select>
                 <label>Custom Type</label>
             </div>

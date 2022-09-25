@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CarServiceRequestController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomSetupController;
 use App\Http\Controllers\FormRequestController;
+use App\Http\Controllers\GetAjaxRequestController;
 use App\Http\Controllers\StaffController;
 
 /*
@@ -58,12 +60,22 @@ Route::middleware(['user_check'])->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::get('home', 'userHome')->name('home');
         Route::post('user_profile', 'profileStore')->name('user_profile');
+
     });
 
     Route::controller(CustomerController::class)->group(function () {
         Route::get('customers', 'index')->name('customers');
         Route::post('store_customer', 'store');
         Route::get('delete_customer/{id}', 'destroy');
+
+    });
+
+    Route::controller(CarServiceRequestController::class)->group(function () {
+        Route::get('services', 'index')->name('services');
+        Route::get('service_transactions', 'serviceTransactions')->name('service_transactions');
+        Route::post('store_service', 'store');
+        Route::post('service_payment', 'servicePayment');
+        Route::get('delete_service/{id}', 'destroy');
 
     });
 
@@ -82,3 +94,11 @@ Route::controller(FormRequestController::class)->group(function () {
     // Modal delete Route
     Route::get('delete-modal/{data}/{id}', 'getDeleteModalData');
 });
+
+Route::controller(GetAjaxRequestController::class)->group(function () {
+    Route::get('get-car-info', 'getCarInfo');
+});
+
+// Receipt Route
+Route::get('receipt/{request}/{data}', [CarServiceRequestController::class, 'getReceipt']);
+Route::get('reprint_receipt/{id}', [CarServiceRequestController::class, 'reprintReceipt']);

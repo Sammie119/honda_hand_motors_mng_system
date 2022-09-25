@@ -85,32 +85,6 @@
 
                     $('.staff').focus();
 
-                    $('.staff').bind('change',function(){   
-                        var staff = $('.staff').val();
-                        // var staff_id = document.querySelector('.staff_id').value;
-                        
-                        $.ajax({
-                            type:'GET',
-                            url:"get-staff-info",
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            data: {
-                                staff
-                                },
-                            success:function(data) {
-                                if(data === ''){
-                                    return;
-                                }
-                                else {
-                                    $("#position").val(data.position);
-                                    $("#basic_salary").val(data.salary);
-                                    $("#staff_id").val(data.staff_id);
-                                }
-                            }
-                        });
-                    });
-
                 });
 
                 $(document).on('click', '.create', function(){
@@ -118,17 +92,6 @@
 
                     var createModal=$(this).val();
                     $.get('create-modal/'+createModal, function(result) {
-                        
-                        $(".modal-body").html(result);
-                        
-                    })
-                });
-
-                $(document).on('click', '.view', function(){
-                    $('.modal-title').text('View User Details');
-
-                    var viewModal=$(this).val();
-                    $.get('view-modal/view_user/'+viewModal, function(result) {
                         
                         $(".modal-body").html(result);
                         

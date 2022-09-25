@@ -8,7 +8,7 @@
     <div class="lh-1">
         <h1 class="h5 mb-0 text-white lh-1">Home</h1>
     </div>
-    <button class="btn btn-outline-secondary btn-sm text-secondary">add</button>
+    <button class="btn btn-outline-dark btn-sm" style="visibility: hidden">add</button>
 </div>
 
   @include('includes.error_display')
