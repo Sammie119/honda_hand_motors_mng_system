@@ -20,17 +20,19 @@
                     <a class="nav-link {{ request()->is('rents') ? 'active' : '' }}" href="{{ route('rents') }}">Rents</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('customers') ? 'active' : '' }}" href="{{ route('customers') }}">Customers</a>
+                    <a class="nav-link {{ request()->is('expenditures') ? 'active' : '' }}" href="{{ route('expenditures') }}">Expenditures</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Switch account</a>
+                    <a class="nav-link {{ request()->is('customers') ? 'active' : '' }}" href="{{ route('customers') }}">Customers</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Settings</a>
+                    <a class="nav-link dropdown-toggle 
+                        {{ request()->is('accounts_reports') ? 'active' : '' }}
+                        {{ request()->is('income_statement') ? 'active' : '' }}
+                    " href="#" data-bs-toggle="dropdown" aria-expanded="false">Accounts</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><a class="dropdown-item" href="{{ route('accounts_reports') }}">Accounts Report</a></li>
+                        <li><a class="dropdown-item" href="{{ route('income_statement') }}">Income Statement</a></li>
                     </ul>
                 </li>
             </ul>

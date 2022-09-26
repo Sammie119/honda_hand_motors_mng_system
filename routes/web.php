@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AccountsReportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarServiceRequestController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomSetupController;
+use App\Http\Controllers\ExpenditureController;
 use App\Http\Controllers\FormRequestController;
 use App\Http\Controllers\GetAjaxRequestController;
 use App\Http\Controllers\RentController;
@@ -84,6 +86,19 @@ Route::middleware(['user_check'])->group(function () {
         Route::get('rents', 'index')->name('rents');
         Route::post('store_rent', 'store');
         Route::get('delete_rent/{id}', 'destroy');
+
+    });
+
+    Route::controller(ExpenditureController::class)->group(function () {
+        Route::get('expenditures', 'index')->name('expenditures');
+        Route::post('store_expenditure', 'store');
+        Route::get('delete_expenditure/{id}', 'destroy');
+
+    });
+
+    Route::controller(AccountsReportController::class)->group(function () {
+        Route::get('accounts_reports', 'accountsReports')->name('accounts_reports');
+        Route::get('income_statement', 'incomeStatement')->name('income_statement');
 
     });
 

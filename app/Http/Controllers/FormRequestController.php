@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\CustomSetup;
 use Illuminate\Http\Request;
 use App\Models\CarServiceRequest;
+use App\Models\Expenditure;
 
 class FormRequestController extends Controller
 {
@@ -41,6 +42,10 @@ class FormRequestController extends Controller
 
             case 'new_rent':
                 return view('forms.input-forms.rent_form');
+                break;
+
+            case 'new_expenditure':
+                return view('forms.input-forms.expenditure_form');
                 break;
 
             default:
@@ -101,6 +106,11 @@ class FormRequestController extends Controller
                 $rent = Rent::find($id);
                 return view('forms.input-forms.rent_form', ['rent' => $rent]);
                 break;
+
+            case 'edit_expenditure':
+                $exp = Expenditure::find($id);
+                return view('forms.input-forms.expenditure_form', ['expenditure' => $exp]);
+                break;
         
             default:
                 return "No Form Selected";
@@ -148,6 +158,10 @@ class FormRequestController extends Controller
 
             case 'delete_rent':
                 return view('forms.delete-forms.delete_rent', ['id' => $id]);
+                break;
+
+            case 'delete_expenditure':
+                return view('forms.delete-forms.delete_expenditure', ['id' => $id]);
                 break;
         
             default:
