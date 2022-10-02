@@ -15,7 +15,7 @@
 
 <div class="my-3 p-3 bg-body rounded shadow-sm">
 
-    <form action="get_pharmacy_report" method="POST" autocomplete="off">
+    <form action="income_accounts_report" method="POST" autocomplete="off">
         @csrf
         <div class="row">
             <div class="col-4">
@@ -27,6 +27,7 @@
                         <option value="CashBook">Cash Book Report</option>
                         <option value="MainLabour">Main Labour Report</option>
                         <option value="RentAccount">Rent Account Report</option>
+                        <option value="LabourIncome">Labour Income</option>
                     </select>
                     <label>Amount</label>
                 </div>
@@ -34,13 +35,13 @@
             <div class="col-4">
                 <div class="form-floating mb-3 mb-md-0">
                     <input class="form-control" id="report_from" name="report_from" type="date" max="{{ date('Y-m-d') }}" required placeholder=" " />
-                    <label>Amount</label>
+                    <label>Repert From</label>
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-floating mb-3 mb-md-0">
                     <input class="form-control" id="report_from" name="report_to" type="date" max="{{ date('Y-m-d') }}" required placeholder=" " />
-                    <label>Amount</label>
+                    <label>Repert To</label>
                 </div>
             </div>
         </div>

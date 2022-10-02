@@ -76,7 +76,7 @@
 @include('modals.medium-modal')
 @include('modals.confirm-modal')
 
-  @push('scripts')
+@push('scripts')
     <script>
         window.onload = function(){
             $('#search').focus();

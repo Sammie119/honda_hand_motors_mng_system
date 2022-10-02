@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Models\CarServiceRequest;
 
 class GetAjaxRequestController extends Controller
 {
@@ -28,4 +29,53 @@ class GetAjaxRequestController extends Controller
 
         return response()->json($results);
     }
+
+    public function getCarInfoServices(Request $request)
+    {
+        $cars = CarServiceRequest::selectRaw("customer_id, car_no, fault, ser_charge, engineer, sum(amount_paid) as amount_paid, service_date, service_no")
+                    ->where('car_no', $request->car_no)
+                    ->groupBy('customer_id', 'car_no', 'ser_charge', 'engineer', 'fault', 'service_date', 'service_no')
+                    ->get();
+        
+        $car_info = json_encode($cars);
+
+        if($cars){
+            $i = 0;
+            foreach ($cars as $key => $car) {
+                echo '
+                    <tr style="border-bottom: 1px solid;" class="tab">
+                        <td>'.++$i.'</td>
+                        <td>'.formatDate($car->service_date).'</td>
+                        <td>'.$car->car_no.'</td>
+                        <td>'.$car->customer->customer_name.'</td>
+                        <td>'.$car->engineer.'</td>
+                        <td>'.number_format($car->ser_charge, 2).'</td>
+                        <td>'.number_format($car->amount_paid, 2).'</td>
+                        <td>'.number_format(($car->ser_charge - $car->amount_paid), 2).'</td>
+                    </tr>
+                ';
+            }
+
+        }
+        else {
+            echo "
+                <tr>
+                    <td colspan='8'>No Data Found</td>
+                </tr>
+            ";
+        }
+        
+    }
+
+    // <tr style="border-bottom: 1px solid;" class="tab">
+    //                     <td>'.++$i.'</td>
+    //                     <td>'.formatDate($car->service_date).'</td>
+    //                     <td>'.$car->car_no.'</td>
+    //                     <td>'.$car->customer->customer_name.'</td>
+    //                     <td>'.$car->engineer.'</td>
+    //                     <td>'.formatCedisAmount($car->ser_charge).'</td>
+    //                     <td>'.formatCedisAmount($car->amount_paid).'</td>
+    //                     <td>'.formatCedisAmount($car->ser_charge - $car->amount_paid).'</td>
+    //                 </tr>
+
 }

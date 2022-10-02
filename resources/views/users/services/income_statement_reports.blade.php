@@ -15,7 +15,7 @@
 
 <div class="my-3 p-3 bg-body rounded shadow-sm">
 
-    <form action="get_pharmacy_report" method="POST" autocomplete="off">
+    <form action="income_accounts_report" method="POST" autocomplete="off">
         @csrf
         <div class="row">
             <div class="col-4">
@@ -29,37 +29,79 @@
                 </div>
             </div>
             <div class="col-4">
-                <div class="form-floating mb-3 mb-md-0">
-                    <select name="report_month" id="report_month" class="form-control form-control-border" required>
-                        <option value="" selected disabled>Select Reporting Month</option>
-                        <option>January</option>
-                        <option>February</option>
-                        <option>March</option>
-                        <option>April</option>
-                        <option>May</option>
-                        <option>June</option>
-                        <option>July</option>
-                        <option>August</option>
-                        <option>September</option>
-                        <option>October</option>
-                        <option>November</option>
-                        <option>December</option>
-                    </select>
-                    <label for="recipient-name" class="control-label">Reporting Month:</label>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <select name="report_month_from" id="report_month_from" class="form-control form-control-border" required>
+                                <option value="" selected disabled>--Select Month--</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                            <label for="recipient-name" class="control-label">Report Month From:</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <select name="report_year_from" id="report_year_from" class="form-control form-control-border" required>
+                                <option value="" selected disabled>--Select Year--</option>
+                                <?php 
+                                for($i = 2022; $i <= date('Y'); $i++){
+                                    echo "<option>$i</option>";
+                                }
+                                ?>
+                            </select>
+                            <label for="recipient-name" class="control-label">Report Year From:</label>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="form-floating mb-3 mb-md-0">
-                    <select name="report_year" id="report_year" class="form-control form-control-border" required>
-                        <option value="" selected disabled>Select Reporting Year</option>
-                        <?php 
-                        for($i = 2022; $i <= date('Y'); $i++){
-                            echo "<option>$i</option>";
-                        }
-                        ?>
-                    </select>
-                    <label for="recipient-name" class="control-label">Reporting Year:</label>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <select name="report_month_to" id="report_month_to" class="form-control form-control-border" required>
+                                <option value="" selected disabled>--Select Month--</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                            <label for="recipient-name" class="control-label">Report Month To:</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <select name="report_year_to" id="report_year_to" class="form-control form-control-border" required>
+                                <option value="" selected disabled>--Select Year--</option>
+                                <?php 
+                                for($i = 2022; $i <= date('Y'); $i++){
+                                    echo "<option>$i</option>";
+                                }
+                                ?>
+                            </select>
+                            <label for="recipient-name" class="control-label">Report Year To:</label>
+                        </div>
+                    </div>
                 </div>
+                
             </div>
         </div>
 
@@ -82,7 +124,7 @@
 @push('scripts')
     <script>
         $('.load').click(function () {
-            if(document.getElementById('report_month').value == '' && document.getElementById('report_year').value == '' && document.getElementById('report_type').value == ''){
+            if(document.getElementById('report_month_from').value == '' && document.getElementById('report_year_to').value == '' && document.getElementById('report_type').value == ''){
                 document.getElementById('gif_load').style.display = 'none';
             }
             else{

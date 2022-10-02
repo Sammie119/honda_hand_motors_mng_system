@@ -99,7 +99,10 @@ Route::middleware(['user_check'])->group(function () {
     Route::controller(AccountsReportController::class)->group(function () {
         Route::get('accounts_reports', 'accountsReports')->name('accounts_reports');
         Route::get('income_statement', 'incomeStatement')->name('income_statement');
-
+        Route::get('debtors', 'debtorListReport')->name('debtors');
+        Route::get('specific_car', 'specificCarReport')->name('specific_car');
+        Route::post('income_accounts_report', 'incomeAccountsReport')->name('income_accounts_report');
+        
     });
 
 });
@@ -120,6 +123,8 @@ Route::controller(FormRequestController::class)->group(function () {
 
 Route::controller(GetAjaxRequestController::class)->group(function () {
     Route::get('get-car-info', 'getCarInfo');
+    Route::get('car-info', 'getCarInfoServices');
+
 });
 
 // Receipt Route

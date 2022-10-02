@@ -29,10 +29,14 @@
                     <a class="nav-link dropdown-toggle 
                         {{ request()->is('accounts_reports') ? 'active' : '' }}
                         {{ request()->is('income_statement') ? 'active' : '' }}
+                        {{ request()->is('debtors') ? 'active' : '' }}
+                        {{ request()->is('specific_car') ? 'active' : '' }}
                     " href="#" data-bs-toggle="dropdown" aria-expanded="false">Accounts</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('accounts_reports') }}">Accounts Report</a></li>
                         <li><a class="dropdown-item" href="{{ route('income_statement') }}">Income Statement</a></li>
+                        <li><a class="dropdown-item" href="{{ route('debtors') }}">Debtors List</a></li>
+                        <li><a class="dropdown-item" href="{{ route('specific_car') }}">Specific Car Report</a></li>
                     </ul>
                 </li>
             </ul>
