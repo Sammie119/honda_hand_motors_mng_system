@@ -43,6 +43,18 @@
                 text-transform: uppercase;
             }
 
+            #trans{
+                text-align: center;
+                border: 2px solid;
+                width: 300px;
+                padding: 10px;
+                font-weight: bold;
+                border-radius: 30px;
+                color: #fff;
+                background-color: #000;
+                font-size: 25px;
+            }
+
             hr {
                 border-color: #000;
             }
@@ -116,17 +128,22 @@
                 <div><b>Car Model:</b> {{ $data->customer->car_model }} 
                     <div style="float: right;"><b>Date:</b> {{ date('d M, Y') }} </div>
                 </div>
-                <div><b>Driver's Name:</b> {{ $data->customer->driver_name }} 
-                    <div style="float: right;"><b>Receipt No.:</b> {{ $data->receipt_no }} </div>
-                </div> 
+                <div><b>Driver's Name:</b> {{ $data->customer->driver_name }}
+                    @if ($request === 'service')
+                        <div style="float: right;"><b>Receipt No.:</b> {{ $data->receipt_no }} </div>
+                    @else
+                        <div style="float: right;"><b>{{ (isset($data->receipt_no)) ? 'Receipt No.:' : 'Invoice No.:' }}</b> {{ sprintf("%010d", $data->receipt_no ?? $data->invoice_no) }} </div>
+                    @endif 
+                    
+                </div>
             </div>
         
             <hr class="mov">
         
             <div class="mov">
-                <div align="center"><u><b>Transactions:</b></u></div>
                 @switch($request)
                     @case('service')
+                        <div align="center"><u><b>Transactions:</b></u></div>
                         <div>
                             <table border="0" class="mov">
                                 <thead>
@@ -163,8 +180,57 @@
                         @break
 
                     @case('stores')
-                        
-                        <h1>Stores Receipt</h1>
+                        <center><div id="trans">{{ (isset($data->receipt_no)) ? 'Offical Receipt' : 'Invoice' }}</div></center>
+                        <div>
+                            <table border = "0" class = "mov">
+                                <thead>
+                                    <th width = "3%">#</th>
+                                    <th width = "">Item</th>
+                                    <th width = "3%">Qty</th>
+                                    <th width = "20%" style="text-align: right;" nowrap>Unit Price</th>
+                                    <th width = "20%" style="text-align: right;">Amount</th>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data->stores_items->items as $key => $item)
+                                        @php
+                                            $i = $key;
+                                        @endphp
+                                        <tr>
+                                            <td>{{ ++$key }}</td>
+                                            <td style='text-align: left; padding-left: 3px;'>{{ $item }}</td>
+                                            <td style='text-align: center;'>{{ $data->stores_items->quantity[$i] }}</td>
+                                            <td style='text-align: right;'>{{ formatCedisAmount($data->stores_items->unit_price[$i]) }}</td>
+                                            <td style='text-align: right; padding-right: 20px;'>{{ formatCedisAmount($data->stores_items->quantity[$i] * $data->stores_items->unit_price[$i]) }}</td>
+                                        </tr>
+                                    @endforeach   
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan = "4" style="text-align: right;">Total Amount:</th>
+                                        <th style="text-align: right; padding-right: 20px;">{{ formatCedisAmount($data->total_amount) }}</th>
+                                    </tr>
+                                    @if (isset($data->receipt_no))
+                                        <tr>
+                                            <th colspan = "4" style="text-align: right;">Previous Payment:</th>
+                                            <th style="text-align: right; padding-right: 20px;">{{ formatCedisAmount($data->previous_payment) }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan = "4" style="text-align: right;">Amount Paid:</th>
+                                            <th style="text-align: right; padding-right: 20px;">{{ formatCedisAmount($data->amount_paid) }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan = "4" style="text-align: right;">Total Amount Paid:</th>
+                                            <th style="text-align: right; padding-right: 20px;">{{ formatCedisAmount($total = $data->previous_payment + $data->amount_paid) }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan = "4" style="text-align: right;">Balance:</th>
+                                            <th style="text-align: right; padding-right: 20px;">{{ formatCedisAmount($data->total_amount - $total) }}</th>
+                                        </tr> 
+                                    @endif
+                                    
+                                </tfoot>
+                            </table>
+                        </div>
                         @break
                 
                     @default
@@ -173,7 +239,14 @@
             </div>
             
             <div align="center"><b>Stay Blessed.......</b></div>
-        
+            @if ($request === 'stores')
+                <div style="height: 50px; margin-right: 5%; margin-left: 5%; margin-top: 40px; font-weight: bold;">
+                    <div style="float: left">..................................<br> Manager's Signature</div>
+            
+                    <div style="float: right">..................................<br> Customer's Signature</div>
+                </div>    
+            @endif
+                    
         </div>
 
         <div class="mov noprint">

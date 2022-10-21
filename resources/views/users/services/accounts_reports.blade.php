@@ -28,6 +28,9 @@
                         <option value="MainLabour">Main Labour Report</option>
                         <option value="RentAccount">Rent Account Report</option>
                         <option value="LabourIncome">Labour Income</option>
+                        @if (Auth()->user()->department === 'Stores')
+                            <option value="LabourIncome">Supplies</option>
+                        @endif
                     </select>
                     <label>Amount</label>
                 </div>

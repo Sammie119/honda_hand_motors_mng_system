@@ -13,7 +13,7 @@ return new class extends Migration
      * @return void
      */
     public function up()
-    {
+    {        
         Schema::create('stores_transactions', function (Blueprint $table) {
             $table->id('transaction_id');
             $table->integer('customer_id');
@@ -21,10 +21,11 @@ return new class extends Migration
             $table->json('items');
             $table->json('quantity');
             $table->json('unit_price');
-            $table->decimal('total_amount', 12,2);
-            $table->decimal('amount_paid', 12,2);
+            $table->decimal('total_amount', 12,2)->default(0.00);
+            $table->decimal('amount_paid', 12,2)->default(0.00);
+            $table->decimal('balance', 12,2)->default(0.00);
             $table->integer('invoice_no');
-            $table->integer('receipt_no');
+            $table->integer('receipt_no')->nullable();
             $table->date('transaction_date');
             $table->integer('created_by');
             $table->integer('updated_by');
@@ -33,7 +34,7 @@ return new class extends Migration
         });
 
         DB::statement('ALTER TABLE stores_transactions
-            CHANGE receipt_no receipt_no INT(10) UNSIGNED ZEROFILL NOT NULL,
+            CHANGE receipt_no receipt_no INT(10) UNSIGNED ZEROFILL,
             CHANGE invoice_no invoice_no INT(10) UNSIGNED ZEROFILL NOT NULL
         ');
     }

@@ -1,16 +1,19 @@
 <?php
 
-use App\Http\Controllers\AccountsReportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CarServiceRequestController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\RentController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CustomSetupController;
 use App\Http\Controllers\ExpenditureController;
 use App\Http\Controllers\FormRequestController;
+use App\Http\Controllers\AccountsReportController;
 use App\Http\Controllers\GetAjaxRequestController;
-use App\Http\Controllers\RentController;
-use App\Http\Controllers\StaffController;
+use App\Http\Controllers\CarServiceRequestController;
+use App\Http\Controllers\StoresTransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +63,7 @@ Route::middleware(['admin'])->group(function () {
 
 Route::middleware(['user_check'])->group(function () {
 
+    // Services
     Route::controller(AuthController::class)->group(function () {
         Route::get('home', 'userHome')->name('home');
         Route::post('user_profile', 'profileStore')->name('user_profile');
@@ -105,6 +109,32 @@ Route::middleware(['user_check'])->group(function () {
         
     });
 
+    // Stores
+    Route::controller(SupplierController::class)->group(function () {
+        Route::get('suppliers', 'index')->name('suppliers');
+        Route::post('store_supplier', 'store');
+        Route::get('delete_supplier/{id}', 'destroy');
+
+    });
+
+    Route::controller(ItemController::class)->group(function () {
+        Route::get('items', 'index')->name('items');
+        Route::post('store_item', 'store');
+        Route::get('delete_item/{id}', 'destroy');
+
+    });
+
+    Route::controller(StoresTransactionController::class)->group(function () {
+        Route::get('stores_transactions', 'index')->name('stores_transactions');
+        Route::post('store_transaction', 'store');
+        Route::get('print_invoice/{id}', 'printInvoice');
+        Route::post('store_payment', 'storePayment');
+        Route::get('transactions_payments', 'transactionsPayments')->name('transactions_payments');
+        Route::get('print_receipt/{id}', 'printReceipt');
+        Route::get('delete_transaction/{id}', 'destroy');
+        Route::get('delete_transaction_receipt/{id}', 'destroyTransactionReceipt');
+    });
+
 });
 
 Route::controller(FormRequestController::class)->group(function () {
@@ -124,6 +154,7 @@ Route::controller(FormRequestController::class)->group(function () {
 Route::controller(GetAjaxRequestController::class)->group(function () {
     Route::get('get-car-info', 'getCarInfo');
     Route::get('car-info', 'getCarInfoServices');
+    Route::get('get-item-info', 'getItemInfo');
 
 });
 

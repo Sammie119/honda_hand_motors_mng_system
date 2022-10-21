@@ -11,20 +11,42 @@
                     <a class="nav-link {{ request()->is('home') ? 'active' : '' }}" aria-current="page" href="{{ route('home') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Notifications</a>
+                    <a class="nav-link {{ request()->is('stores_transactions') ? 'active' : '' }}" href="{{ route('stores_transactions') }}">Transactions</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
+                    <a class="nav-link {{ request()->is('transactions_payments') ? 'active' : '' }}" href="{{ route('transactions_payments') }}">Get Receipt</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Switch account</a>
+                    <a class="nav-link {{ request()->is('expenditures') ? 'active' : '' }}" href="{{ route('expenditures') }}">Expenditures</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('customers') ? 'active' : '' }}" href="{{ route('customers') }}">Customers</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Settings</a>
+                    <a class="nav-link dropdown-toggle 
+                        {{ request()->is('items') ? 'active' : '' }}
+                    " href="#" data-bs-toggle="dropdown" aria-expanded="false">Items</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><a class="dropdown-item" href="{{ route('items') }}">Items List</a></li>
+                        <li><a class="dropdown-item" href="{{ route('income_statement') }}">Restock</a></li>
+                        <li><a class="dropdown-item" href="{{ route('income_statement') }}">Return Form</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('suppliers') ? 'active' : '' }}" href="{{ route('suppliers') }}">Suppliers</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle 
+                        {{ request()->is('accounts_reports') ? 'active' : '' }}
+                        {{ request()->is('income_statement') ? 'active' : '' }}
+                        {{ request()->is('debtors') ? 'active' : '' }}
+                        {{ request()->is('specific_car') ? 'active' : '' }}
+                    " href="#" data-bs-toggle="dropdown" aria-expanded="false">Accounts</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('accounts_reports') }}">Accounts Report</a></li>
+                        <li><a class="dropdown-item" href="{{ route('income_statement') }}">Income Statement</a></li>
+                        {{-- <li><a class="dropdown-item" href="{{ route('debtors') }}">Debtors List</a></li>
+                        <li><a class="dropdown-item" href="{{ route('specific_car') }}">Specific Car Report</a></li> --}}
                     </ul>
                 </li>
             </ul>

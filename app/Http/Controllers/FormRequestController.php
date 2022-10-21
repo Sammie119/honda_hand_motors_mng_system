@@ -10,6 +10,9 @@ use App\Models\CustomSetup;
 use Illuminate\Http\Request;
 use App\Models\CarServiceRequest;
 use App\Models\Expenditure;
+use App\Models\Item;
+use App\Models\StoresTransaction;
+use App\Models\Supplier;
 
 class FormRequestController extends Controller
 {
@@ -46,6 +49,19 @@ class FormRequestController extends Controller
 
             case 'new_expenditure':
                 return view('forms.input-forms.expenditure_form');
+                break;
+
+            case 'new_supplier':
+                return view('forms.input-forms.supplier_form');
+                break;
+
+            case 'new_item':
+                return view('forms.input-forms.item_form');
+                break;
+
+            case 'new_transaction':
+                $item = Item::orderByDesc('item')->get();
+                return view('forms.input-forms.transaction_form', ['items' => $item]);
                 break;
 
             default:
@@ -111,6 +127,33 @@ class FormRequestController extends Controller
                 $exp = Expenditure::find($id);
                 return view('forms.input-forms.expenditure_form', ['expenditure' => $exp]);
                 break;
+
+            case 'edit_supplier':
+                $sup = Supplier::find($id);
+                return view('forms.input-forms.supplier_form', ['supplier' => $sup]);
+                break;
+
+            case 'edit_item':
+                $item = Item::find($id);
+                return view('forms.input-forms.item_form', ['item' => $item]);
+                break;
+
+            case 'edit_transaction':
+                $trans = StoresTransaction::find($id);
+                $item = Item::orderByDesc('item')->get();
+                return view('forms.input-forms.transaction_form', ['transaction' => $trans, 'items' => $item]);
+                break;
+
+            case 'store_payment':
+                $trans = StoresTransaction::where('invoice_no', $id)->get();
+                $balance = (float)$trans->first()->total_amount - $trans->sum('amount_paid');
+
+                // dd($balance);
+                if($balance == 0){
+                    return 'Full Payment Made';
+                }
+                return view('forms.input-forms.stores_payment_form', ['transaction' => $trans]);
+                break;
         
             default:
                 return "No Form Selected";
@@ -162,6 +205,22 @@ class FormRequestController extends Controller
 
             case 'delete_expenditure':
                 return view('forms.delete-forms.delete_expenditure', ['id' => $id]);
+                break;
+
+            case 'delete_supplier':
+                return view('forms.delete-forms.delete_supplier', ['id' => $id]);
+                break;
+
+            case 'delete_item':
+                return view('forms.delete-forms.delete_item', ['id' => $id]);
+                break;
+
+            case 'delete_transaction':
+                return view('forms.delete-forms.delete_transaction', ['id' => $id]);
+                break;
+
+            case 'delete_transaction_receipt':
+                return view('forms.delete-forms.delete_transaction_receipt', ['id' => $id]);
                 break;
         
             default:
