@@ -13,6 +13,7 @@ use App\Models\Expenditure;
 use App\Models\Item;
 use App\Models\StoresTransaction;
 use App\Models\Supplier;
+use App\Models\SupplyReceived;
 
 class FormRequestController extends Controller
 {
@@ -62,6 +63,22 @@ class FormRequestController extends Controller
             case 'new_transaction':
                 $item = Item::orderByDesc('item')->get();
                 return view('forms.input-forms.transaction_form', ['items' => $item]);
+                break;
+
+            case 'new_supply':
+                $item = Item::orderByDesc('item')->get();
+
+                $item_array = [];
+                foreach ($item as $value) {
+                    $item_array[$value->item] = $value->stock;
+                }
+            
+                return view('forms.input-forms.supplies_received_form', ['items' => $item, 'item_array' => json_encode($item_array)]);
+                break;
+
+            case 'new_return':
+                $item = Item::orderByDesc('item')->get();
+                return view('forms.input-forms.return_item_form', ['items' => $item]);
                 break;
 
             default:
@@ -154,6 +171,25 @@ class FormRequestController extends Controller
                 }
                 return view('forms.input-forms.stores_payment_form', ['transaction' => $trans]);
                 break;
+
+            case 'edit_supply':               
+                
+                $item = Item::orderByDesc('item')->get();
+
+                $item_array = [];
+                foreach ($item as $value) {
+                    $item_array[$value->item] = $value->stock;
+                }
+                $sup = SupplyReceived::find($id);
+            
+                return view('forms.input-forms.supplies_received_form', ['supply' => $sup, 'items' => $item, 'item_array' => json_encode($item_array)]);
+                break;
+
+            // case 'edit_return':
+            //     $trans = StoresTransaction::find($id);
+            //     $item = Item::orderByDesc('item')->get();
+            //     return view('forms.input-forms.return_item_form', ['transaction' => $trans, 'items' => $item]);
+            //     break;
         
             default:
                 return "No Form Selected";
@@ -168,6 +204,11 @@ class FormRequestController extends Controller
             case 'view_service':
                 $services = CarServiceRequest::where('service_no', $id)->get();
                 return view('forms.view-data.service_payment', ['services' => $services]);
+                break;
+
+            case 'view_return':
+                $trans = StoresTransaction::find($id);
+                return view('forms.view-data.return_item', ['transaction' => $trans]);
                 break;
         
             default:
@@ -222,7 +263,15 @@ class FormRequestController extends Controller
             case 'delete_transaction_receipt':
                 return view('forms.delete-forms.delete_transaction_receipt', ['id' => $id]);
                 break;
-        
+
+            case 'delete_supply':
+                return view('forms.delete-forms.delete_supply', ['id' => $id]);
+                break;
+
+            case 'delete_return':
+                return view('forms.delete-forms.delete_return', ['id' => $id]);
+                break;
+    
             default:
                 return "No Form Selected";
                 break;

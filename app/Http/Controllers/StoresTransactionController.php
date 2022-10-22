@@ -50,10 +50,8 @@ class StoresTransactionController extends Controller
             }
 
             foreach ($trans->items as $key => $item) {
-                $item_name = Item::where('item', $item)->first();
-                $item_name->stock = $item_name->stock + $trans->quantity[$key];
-
-                $item_name->update();
+                
+                $this->updateItemStock($this->getItemId($item), $trans->quantity[$key], 'Add');
             }
 
         } else {
@@ -88,11 +86,8 @@ class StoresTransactionController extends Controller
         }
 
         foreach ($request->items_list as $key => $item) {
-            $item_name = Item::where('item', $item)->first();
-            $item_name->stock = $request->stock[$key] - $request->quantity[$key];
 
-            // dd($request->stock[$key], $request->quantity[$key], $item_name->stock);
-            $item_name->update();
+            $this->updateItemStock($this->getItemId($item), $request->quantity[$key], 'Substract');
         }
 
         $data = json_encode([
@@ -211,10 +206,8 @@ class StoresTransactionController extends Controller
             $trans->delete();
 
             foreach ($trans->items as $key => $item) {
-                $item_name = Item::where('item', $item)->first();
-                $item_name->stock = $item_name->stock + $trans->quantity[$key];
 
-                $item_name->update();
+                $this->updateItemStock($this->getItemId($item), $trans->quantity[$key], 'Add');
             }
 
             return back()->with('success', 'Transaction deleted Successfully!!');

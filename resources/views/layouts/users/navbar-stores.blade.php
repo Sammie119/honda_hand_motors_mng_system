@@ -25,11 +25,13 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle 
                         {{ request()->is('items') ? 'active' : '' }}
+                        {{ request()->is('supplies_received') ? 'active' : '' }}
+                        {{ request()->is('return_items') ? 'active' : '' }}
                     " href="#" data-bs-toggle="dropdown" aria-expanded="false">Items</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('items') }}">Items List</a></li>
-                        <li><a class="dropdown-item" href="{{ route('income_statement') }}">Restock</a></li>
-                        <li><a class="dropdown-item" href="{{ route('income_statement') }}">Return Form</a></li>
+                        <li><a class="dropdown-item" href="{{ route('supplies_received') }}">Restock</a></li>
+                        <li><a class="dropdown-item" href="{{ route('return_items') }}">Return Form</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -39,8 +41,8 @@
                     <a class="nav-link dropdown-toggle 
                         {{ request()->is('accounts_reports') ? 'active' : '' }}
                         {{ request()->is('income_statement') ? 'active' : '' }}
-                        {{ request()->is('debtors') ? 'active' : '' }}
-                        {{ request()->is('specific_car') ? 'active' : '' }}
+                        {{-- {{ request()->is('debtors') ? 'active' : '' }}
+                        {{ request()->is('specific_car') ? 'active' : '' }} --}}
                     " href="#" data-bs-toggle="dropdown" aria-expanded="false">Accounts</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('accounts_reports') }}">Accounts Report</a></li>

@@ -13,7 +13,10 @@ use App\Http\Controllers\FormRequestController;
 use App\Http\Controllers\AccountsReportController;
 use App\Http\Controllers\GetAjaxRequestController;
 use App\Http\Controllers\CarServiceRequestController;
+use App\Http\Controllers\ReturnItemsController;
 use App\Http\Controllers\StoresTransactionController;
+use App\Http\Controllers\SupplyReceivedController;
+use App\Models\ReturnItems;
 
 /*
 |--------------------------------------------------------------------------
@@ -121,7 +124,6 @@ Route::middleware(['user_check'])->group(function () {
         Route::get('items', 'index')->name('items');
         Route::post('store_item', 'store');
         Route::get('delete_item/{id}', 'destroy');
-
     });
 
     Route::controller(StoresTransactionController::class)->group(function () {
@@ -133,6 +135,18 @@ Route::middleware(['user_check'])->group(function () {
         Route::get('print_receipt/{id}', 'printReceipt');
         Route::get('delete_transaction/{id}', 'destroy');
         Route::get('delete_transaction_receipt/{id}', 'destroyTransactionReceipt');
+    });
+
+    Route::controller(SupplyReceivedController::class)->group(function () {
+        Route::get('supplies_received', 'index')->name('supplies_received');
+        Route::post('store_supply', 'store');
+        Route::get('delete_supply/{id}', 'destroy');
+    });
+
+    Route::controller(ReturnItemsController::class)->group(function () {
+        Route::get('return_items', 'index')->name('return_items');
+        Route::post('store_return', 'store');
+        Route::get('delete_return/{id}', 'destroy');
     });
 
 });
