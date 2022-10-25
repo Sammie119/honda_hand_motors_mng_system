@@ -35,7 +35,7 @@ use App\Models\ReturnItems;
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('/', 'index');
-    Route::post('login', 'postLogin');
+    Route::post('login', 'postLogin')->middleware('monthly_stock_check');
     Route::get('logout', 'logout')->name('logout');
 });
 

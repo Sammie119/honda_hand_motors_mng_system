@@ -1,5 +1,6 @@
-<?php 
+<?php
 
+use App\Models\Item;
 use App\Models\User;
 
     function getUsername($user_id){
@@ -18,4 +19,15 @@ use App\Models\User;
     function formatCedisAmount($amount){
         echo '<span>&#x20B5;</span>'.number_format($amount, 2);
         return;
+    }
+
+    function getItemNamesImplode(array $item_ids)
+    {
+        $item_names = [];
+
+        foreach ($item_ids as $item) {
+            $item_names[] = Item::find($item)->item;
+        }
+
+        return implode(", ", $item_names);
     }

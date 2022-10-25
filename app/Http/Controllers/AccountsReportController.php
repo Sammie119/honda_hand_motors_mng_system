@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\CarServiceRequest;
 use App\Models\Expenditure;
+use App\Models\MonthlyStock;
 use App\Models\Rent;
 use App\Models\ReturnItems;
 use App\Models\StoresTransaction;
+use App\Models\SupplyReceived;
 use Illuminate\Http\Request;
 
 class AccountsReportController extends Controller
@@ -247,7 +249,100 @@ class AccountsReportController extends Controller
                 $from = $this->incomeStatementFromDates($request->report_month_from, $request->report_year_from);
                 $to = $this->incomeStatementToDates($request->report_month_to, $request->report_year_to);
 
-                dd($from['from1'], $to['to1']);
+                // Sales
+                $total_sales = StoresTransaction::selectRaw('sum(total_amount) as total_amount')
+                                ->where('amount_paid', 0)
+                                ->whereBetween('transaction_date', [$from['from2'], $to['to1']])
+                                ->first()->total_amount;
+
+                $total_cash = StoresTransaction::selectRaw('sum(amount_paid) as amount_paid')
+                                ->where('amount_paid', '>', 0)
+                                ->whereBetween('transaction_date', [$from['from2'], $to['to1']])
+                                ->first()->amount_paid;
+
+                $total_return = ReturnItems::selectRaw('sum(total_amount) as total_amount')
+                                ->whereBetween('transaction_date', [$from['from2'], $to['to1']])
+                                ->first()->total_amount;
+                
+                // Service
+                $service_total = CarServiceRequest::selectRaw('service_no, ser_charge')
+                                ->whereBetween('service_date', [$from['from2'], $to['to1']])
+                                ->groupBy('service_no', 'ser_charge')
+                                ->get();
+                $service_total = $service_total->sum('ser_charge');
+
+                $service_cash = CarServiceRequest::selectRaw('sum(amount_paid) as amount_paid')
+                                ->whereBetween('service_date', [$from['from2'], $to['to1']])
+                                ->first()->amount_paid;
+
+                //Rent Totals
+                #SELECT SUM(amount) AS amount FROM rents_episode WHERE re_date BETWEEN '$from2' AND '$to1'
+                $rent_total = Rent::selectRaw('sum(amount) as amount')
+                                ->whereBetween('rent_date', [$from['from2'], $to['to1']])
+                                ->first()->amount;
+
+                //Opening Stock
+                #SELECT SUM(stock*price) AS open_stock  FROM monthly_stock WHERE (mdate = '$from1' OR mdate = '$from2' OR mdate = '$from3' OR mdate = '$from4')
+                #SELECT SUM(stock*price) AS close_stock  FROM monthly_stock WHERE (mdate = '$to1' OR mdate = '$to2' OR mdate = '$to3' OR mdate = '$to4')
+                $open_stock = MonthlyStock::selectRaw("sum(stock*price) as open_stock")
+                            ->where('mdate', $from['from1'])->orWhere('mdate', $from['from2'])->orWhere('mdate', $from['from3'])->orWhere('mdate', $from['from4'])
+                            ->first()->open_stock;
+                
+                //Closing Stock
+                $close_stock = MonthlyStock::selectRaw("sum(stock*price) as close_stock")
+                            ->where('mdate', $to['to1'])->orWhere('mdate', $to['to2'])->orWhere('mdate', $to['to3'])->orWhere('mdate', $to['to4'])
+                            ->first()->close_stock;
+                                
+                //Cariage Inwards
+                #SELECT SUM(amount) AS cariage_total  FROM expenditures WHERE exp_date BETWEEN '$from2' AND '$to1' AND active = 'Yes' AND portfolio = 'Cariage Inwards'
+                $cariage_total = Expenditure::selectRaw("sum(amount) as cariage_total")
+                            ->whereBetween('exp_date', [$from['from2'], $to['to1']])
+                            ->where('portfolio', 'Cariage Inwards')
+                            ->first()->cariage_total;
+
+                //Add Purchases
+                #SELECT SUM(paid) AS purchase_paid  FROM supply_received WHERE sup_date BETWEEN '$from2' AND '$to1'"
+                $purchase_paid = SupplyReceived::selectRaw("sum(paid) as purchase_paid")
+                            ->whereBetween('sup_date', [$from['from2'], $to['to1']])
+                            ->first()->purchase_paid;
+
+                $purchase_amount = SupplyReceived::selectRaw('supply_no, total_amount')
+                            ->whereBetween('sup_date', [$from['from2'], $to['to1']])
+                            ->groupBy('supply_no', 'total_amount')
+                            ->get();
+                $purchase_amount = $purchase_amount->sum('total_amount');
+
+                #SELECT portfolio, amount FROM expenditures WHERE exp_date BETWEEN '$from2' AND '$to1' AND active = 'Yes' AND portfolio <> 'Cariage Inwards'
+                $expenditure = Expenditure::select('portfolio', 'amount')
+                            ->whereBetween('exp_date', [$from['from2'], $to['to1']])
+                            ->where('portfolio', '!=', 'Cariage Inwards')
+                            ->get();
+
+                $expenses_total = $expenditure->sum('amount');
+
+                $dates = [
+                    'from' => $from['from2'],
+                    'to' => $to['to1'],
+                ];
+
+                $results = [
+                    'total_sales' => (float)$total_sales,
+                    'total_cash' => (float)$total_cash,
+                    'total_return' => (float)$total_return,
+                    'service_total' => (float)$service_total,
+                    'service_total' => $service_total,
+                    'service_cash' => (float)$service_cash,
+                    'rent_total' => (float)$rent_total,
+                    'open_stock' => (float)$open_stock,
+                    'close_stock' => (float)$close_stock,
+                    'cariage_total' => (float)$cariage_total,
+                    'purchase_paid' => (float)$purchase_paid,
+                    'purchase_amount' => (float)$purchase_amount,
+                    'expenditures' => $expenditure,
+                    'expenses_total' => (float)$expenses_total,
+                ];
+
+                // dd($results);
 
                 break;
 
@@ -280,13 +375,33 @@ class AccountsReportController extends Controller
 
                 break;
             
-            // case 'Supplies':
+            case 'Supplies':
 
-            //     $key = 'Supplies';
+                $key = 'Supplies';
 
-            //     $dates = $this->getDates($request->report_from, $request->report_to);
+                $dates = $this->getDates($request->report_from, $request->report_to);
 
-            //     break;
+                $received_payment = SupplyReceived::whereBetween('sup_date', [$request->report_from, $request->report_to])
+                                    ->orderBy('receipt_no')
+                                    ->get();
+
+                $total_amount_debt = SupplyReceived::selectRaw('supply_no, total_amount')
+                                    ->whereBetween('sup_date', [$request->report_from, $request->report_to])
+                                    ->groupBy('supply_no', 'total_amount')
+                                    ->get();
+                $total_amount_debt = $total_amount_debt->sum('total_amount');
+                
+                $total_amount_paid = SupplyReceived::selectRaw('sum(paid) as paid')
+                                    ->whereBetween('sup_date', [$request->report_from, $request->report_to])
+                                    ->first()->paid;
+                // dd($received_payment, $total_amount_debt, $total_amount_paid);
+
+                $results = [
+                    'received_payment' => $received_payment,
+                    'total_amount_debt' => $total_amount_debt,
+                    'total_amount_paid' => $total_amount_paid
+                ];
+                break;
 
             case 'Debtors':
 
