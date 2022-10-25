@@ -22,15 +22,26 @@
                 <div class="form-floating mb-3 mb-md-0">
                     <select name="report_type" id="report_type" class="form-control form-control-border" required>
                         <option value="" selected disabled>Select Report Type</option>
-                        <option value="Accounts">Accounts Report</option>
+
+                        @if (Auth()->user()->department === 'Stores')
+                            <option value="StoresAccounts">Accounts Report</option>
+                        @else
+                            <option value="ServicesAccounts">Accounts Report</option>
+                        @endif
+                        
                         <option value="PettyCash">Petty Cash Report</option>
                         <option value="CashBook">Cash Book Report</option>
-                        <option value="MainLabour">Main Labour Report</option>
-                        <option value="RentAccount">Rent Account Report</option>
-                        <option value="LabourIncome">Labour Income</option>
-                        @if (Auth()->user()->department === 'Stores')
-                            <option value="LabourIncome">Supplies</option>
+
+                        @if (Auth()->user()->department === 'Services')
+                            <option value="MainLabour">Main Labour Report</option>
+                            <option value="RentAccount">Rent Account Report</option>
+                            <option value="LabourIncome">Labour Income</option>
                         @endif
+
+                        @if (Auth()->user()->department === 'Stores')
+                            <option value="Supplies">Supplies</option>
+                        @endif
+
                     </select>
                     <label>Amount</label>
                 </div>

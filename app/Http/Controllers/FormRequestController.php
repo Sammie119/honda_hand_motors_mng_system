@@ -70,7 +70,7 @@ class FormRequestController extends Controller
 
                 $item_array = [];
                 foreach ($item as $value) {
-                    $item_array[$value->item] = $value->stock;
+                    $item_array[] = $value->item;
                 }
             
                 return view('forms.input-forms.supplies_received_form', ['items' => $item, 'item_array' => json_encode($item_array)]);
@@ -178,18 +178,30 @@ class FormRequestController extends Controller
 
                 $item_array = [];
                 foreach ($item as $value) {
-                    $item_array[$value->item] = $value->stock;
+                    $item_array[] = $value->item;
                 }
                 $sup = SupplyReceived::find($id);
+
+                $count = SupplyReceived::where('supply_no', $sup->supply_no)->count();
+
+                if($count >= 2){
+                    return 'Cannot Edit this record, More than One Payment made!!';
+                }
             
                 return view('forms.input-forms.supplies_received_form', ['supply' => $sup, 'items' => $item, 'item_array' => json_encode($item_array)]);
                 break;
 
-            // case 'edit_return':
-            //     $trans = StoresTransaction::find($id);
-            //     $item = Item::orderByDesc('item')->get();
-            //     return view('forms.input-forms.return_item_form', ['transaction' => $trans, 'items' => $item]);
-            //     break;
+            case 'supplies_payment':
+                $sup = SupplyReceived::where('supply_no', $id)->first();
+
+                $paid = SupplyReceived::where('supply_no', $id)->sum('paid');
+
+                if(((float)$sup->total_amount - (float)$paid) == 0){
+                    return "Payment made in full";
+                }
+            
+                return view('forms.input-forms.supplied_payment_form', ['supply' => $sup]);
+                break;
         
             default:
                 return "No Form Selected";
@@ -209,6 +221,15 @@ class FormRequestController extends Controller
             case 'view_return':
                 $trans = StoresTransaction::find($id);
                 return view('forms.view-data.return_item', ['transaction' => $trans]);
+                break;
+
+            case 'view_supply':               
+
+                $sup = SupplyReceived::where('supply_no', $id)->first();
+
+                $payments = SupplyReceived::where('supply_no', $id)->get();
+            
+                return view('forms.view-data.supplied_item', ['supply' => $sup, 'payments' => $payments]);
                 break;
         
             default:
@@ -270,6 +291,10 @@ class FormRequestController extends Controller
 
             case 'delete_return':
                 return view('forms.delete-forms.delete_return', ['id' => $id]);
+                break;
+            
+            case 'delete_supply_payemt':
+                return view('forms.delete-forms.delete_supply_payemt', ['id' => $id]);
                 break;
     
             default:

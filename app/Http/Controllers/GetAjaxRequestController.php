@@ -75,6 +75,7 @@ class GetAjaxRequestController extends Controller
 
         if($item){
             $results = [
+                'item_id' => $item->item_id,
                 'stock' => $item->stock,
                 'unit_price' => $item->price,
             ];

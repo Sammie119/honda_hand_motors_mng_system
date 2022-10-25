@@ -140,7 +140,9 @@ Route::middleware(['user_check'])->group(function () {
     Route::controller(SupplyReceivedController::class)->group(function () {
         Route::get('supplies_received', 'index')->name('supplies_received');
         Route::post('store_supply', 'store');
+        Route::post('supplies_payment', 'supplyPayment');
         Route::get('delete_supply/{id}', 'destroy');
+        Route::get('delete_supply_payemt/{id}', 'destroyPayment');
     });
 
     Route::controller(ReturnItemsController::class)->group(function () {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CarServiceRequest;
 use App\Models\Expenditure;
 use App\Models\Rent;
+use App\Models\ReturnItems;
 use App\Models\StoresTransaction;
 use Illuminate\Http\Request;
 
@@ -44,12 +45,12 @@ class AccountsReportController extends Controller
 
     public function accountsReports()
     {
-        return view('users.services.accounts_reports');
+        return view('accounts_reports');
     }
 
     public function incomeStatement()
     {
-        return view('users.services.income_statement_reports');
+        return view('income_statement_reports');
     }
 
     public function debtorListReport()
@@ -70,9 +71,9 @@ class AccountsReportController extends Controller
     {
         // dd($request->all());
         switch ($request->report_type) {
-            case 'Accounts':
+            case 'ServicesAccounts':
 
-                $key = 'Accounts';
+                $key = 'ServicesAccounts';
 
                 $dates = $this->getDates($request->report_from, $request->report_to);
 
@@ -204,9 +205,6 @@ class AccountsReportController extends Controller
 
                 $dates = $this->getDates($request->report_from, $request->report_to);
 
-                // SELECT car_no, engineer, fault, amount_paid, ser_date FROM service_episode WHERE ser_date BETWEEN '$fr_date' AND '$to_date' ORDER BY engineer
-                // SELECT engineer, SUM(amount_paid) AS amount_paid FROM service_episode WHERE ser_date BETWEEN '$fr_date' AND '$to_date' GROUP BY engineer
-
                 $services = CarServiceRequest::selectRaw('customer_id, service_no, ser_charge, sum(amount_paid) as amount_paid, engineer, fault, service_date')
                                 ->whereBetween('service_date', [$request->report_from, $request->report_to])
                                 ->groupBy('customer_id', 'service_no', 'ser_charge', 'engineer', 'fault', 'service_date')
@@ -253,17 +251,38 @@ class AccountsReportController extends Controller
 
                 break;
 
-            // case 'PettyCash':
+            case 'StoresAccounts':
 
-            //     $key = 'PettyCash';
+                $key = 'StoresAccounts';
 
-            //     $dates = $this->getDates($request->report_from, $request->report_to);
+                $dates = $this->getDates($request->report_from, $request->report_to);
 
-            //     break;
+                $total_stores_sales = StoresTransaction::selectRaw('sum(total_amount) as total_amount')
+                                ->where('amount_paid', 0)
+                                ->whereBetween('transaction_date', [$request->report_from, $request->report_to])
+                                ->first()->total_amount;
+
+                $total_amount_received = StoresTransaction::selectRaw('sum(amount_paid) as amount_paid')
+                                ->where('amount_paid', '>', 0)
+                                ->whereBetween('transaction_date', [$request->report_from, $request->report_to])
+                                ->first()->amount_paid;
+                                
+                $total_amount_returned_items = ReturnItems::selectRaw('sum(total_amount) as total_amount')
+                                ->whereBetween('transaction_date', [$request->report_from, $request->report_to])
+                                ->first()->total_amount;
+
+                // dd($total_stores_sales, $total_amount_received, $total_amount_returned_items);
+                $results = [
+                    'total_stores_sales' => $total_stores_sales,
+                    'total_amount_received' => $total_amount_received,
+                    'total_amount_returned_items' => $total_amount_returned_items
+                ];
+
+                break;
             
-            // case 'PettyCash':
+            // case 'Supplies':
 
-            //     $key = 'PettyCash';
+            //     $key = 'Supplies';
 
             //     $dates = $this->getDates($request->report_from, $request->report_to);
 

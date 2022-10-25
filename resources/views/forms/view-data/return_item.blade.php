@@ -42,3 +42,6 @@
 </div>
     
 <hr width="104%" style="margin-left: -15px; background: #bbb">
+<div class="float-end">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>

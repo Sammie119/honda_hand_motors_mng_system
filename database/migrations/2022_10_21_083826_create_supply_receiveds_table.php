@@ -17,10 +17,11 @@ return new class extends Migration
         Schema::create('supplies_received', function (Blueprint $table) {
             $table->id('supply_id');
             $table->bigInteger('supplier_id');
-            $table->bigInteger('item_id');
-            $table->integer('old_stock');
-            $table->integer('new_stock');
-            $table->decimal('amount', 12, 2);
+            $table->json('item_id');
+            $table->json('old_stock');
+            $table->json('new_stock');
+            $table->json('amount');
+            $table->decimal('total_amount', 12, 2);
             $table->decimal('paid', 12, 2);
             $table->integer('receipt_no');
             $table->date('sup_date');

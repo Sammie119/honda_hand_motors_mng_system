@@ -563,7 +563,7 @@
                 </table> --}}
                 @break
 
-            @case('Accounts')
+            @case('ServicesAccounts')
                 <!--Accounts Print View--> 
                 <table border="0" align="center" class ="table2">
                     @php 
@@ -924,117 +924,71 @@
                 
                 @break
 
-            @case('store_account')
+            @case('StoresAccounts')
                 <!--Stores Account Print View-->
-                {{-- <table border="0" align="center" class ="table2">
-                    <?php 
-                        $fr_date = $_SESSION['fr_date'];
-                        $to_date = $_SESSION['to_date'];  
+                <table border="0" align="center" class ="table2">
+                    @if($dates['from'] == $dates['to'])
+                        <h3>STORES ACCOUNTS FOR {{ formatDate($dates['from']) }}</h3>
+                    @else
+                        <h3>STORES ACCOUNTS FOR <br>{{ formatDate($dates['from']) }} TO {{ formatDate($dates['to']) }}</h3>
+                    @endif
 
-                        $qry="SELECT SUM(amount) AS amount_paid FROM item_episode WHERE item_date BETWEEN '$fr_date' AND '$to_date'";
-                            $i = 1;
-                            if ($view_all_query_run = mysqli_query($conn, $qry)){
-                                while ($view_all_query_row = mysqli_fetch_assoc($view_all_query_run)){
-                                    $amount_paid = $view_all_query_row['amount_paid'];
-                                    
-                                    $amount_paid_t = number_format($amount_paid,2);
+                    @php
+                       $debt = $results['total_stores_sales'] - $results['total_amount_received'];
 
-                                    $i +=1;
-                                    
-                                }
-                                
-                            }
-
-                            $qry="SELECT SUM(paid) AS amount FROM trans_episode WHERE item_date BETWEEN '$fr_date' AND '$to_date'";
-                            $i = 1;
-                            if ($view_all_query_run = mysqli_query($conn, $qry)){
-                                while ($view_all_query_row = mysqli_fetch_assoc($view_all_query_run)){
-                                    $amount = $view_all_query_row['amount'];
-
-                                    $i +=1;
-                                    
-                                }
-                                
-                            }
-
-                            $debt = $amount_paid - $amount;
-
-                            $qry="SELECT SUM(amount) AS amount FROM returned_item WHERE item_date BETWEEN '$fr_date' AND '$to_date'";
-                            $i = 1;
-                            if ($view_all_query_run = mysqli_query($conn, $qry)){
-                                while ($view_all_query_row = mysqli_fetch_assoc($view_all_query_run)){
-                                    $re_amount = $view_all_query_row['amount'];
-
-                                    $i +=1;
-                                    
-                                }
-                                
-                            }
-
-                            $balance = ($amount_paid - $debt) - $re_amount;
-
-                            if($balance >= 0) {
-                                $balance = number_format($balance,2);
-                            }
-                            else {
-                                $balance = -1 * $balance;
-                                $balance = "(".number_format($balance,2).")";
-                            }
-
-                        $fr_dat = date("d/m/Y", strtotime($fr_date));
-                        $to_dat = date("d/m/Y", strtotime($to_date));
-                        
-                        if($fr_date == $to_date) {
-                            echo "<h3>STORES ACCOUNTS FOR $fr_dat</h3>";
-                        } else {
-                            echo "<h3>STORES ACCOUNTS FROM <br>$fr_dat TO $to_dat</h3>";
-                        }
-
-                        echo '<thead>
-                            <tr style="border-bottom: 3px solid;">
-                                <th width="50%"></th>
-                                <th width="25%">Amount (GH&#x20B5;)</th>
-                                <th width="25%">Balance (GH&#x20B5;)</th>
-                            </tr>
-                        </thead>
-                        <tbody>';
-                            echo    "<tr style='border-bottom: 1px solid;'>
-                                        <td>Total Sales</td>
-                                        <td style='text-align: right; padding-right: 30px'>$amount_paid_t</td>
-                                        <td></td>               
-                                    </tr>
-                                    <tr style='border-bottom: 1px solid;'>
-                                        <td>Sales (In debt)</td>
-                                        <td style='text-align: right; padding-right: 30px'>(".number_format($debt,2).")</td>
-                                        <td></td>               
-                                    </tr>
-                                    <tr style='border-bottom: 1px solid;'>
-                                        <td></td>
-                                        <td></td>
-                                        <td style='text-align: right'>".number_format($amount_paid - $debt,2)."</td>               
-                                    </tr>
-                                    <tr style='border-bottom: 1px solid;'>
-                                        <td>Total Returnables</td>
-                                        <td style='text-align: right; padding-right: 30px'>(".number_format($re_amount,2).")</td>
-                                        <td></td>               
-                                    </tr>
-                                    <tr style='border-bottom: 1px solid;'>
-                                        <td></td>
-                                        <td></td>
-                                        <td style='text-align: right'>$balance</td>               
-                                    </tr>";
-                        echo "</tbody>
-                        <tfoot>
-                            <tr style='border-bottom: 2px solid;'>
-                                <th colspan='3' style='text-align: center;'><br></th>
-                            </tr>
-                        </tfoot>";
-                    ?>
-                </table> --}}
+                        $balance = ($results['total_stores_sales'] - $debt) - $results['total_amount_returned_items'];
+                    @endphp  
+                           
+                    <thead>
+                        <tr style="border-bottom: 3px solid;">
+                            <th width="50%"></th>
+                            <th width="25%" style="text-align: right; padding-right: 30px">Amount</th>
+                            <th width="25%" style="text-align: right">Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style='border-bottom: 1px solid;'>
+                            <td>Total Sales</td>
+                            <td style='text-align: right; padding-right: 30px'>{{ formatCedisAmount($results['total_stores_sales']) }}</td>
+                            <td></td>               
+                        </tr>
+                        <tr style='border-bottom: 1px solid;'>
+                            <td>Sales (In debt)</td>
+                            <td style='text-align: right; padding-right: 30px'>({{ formatCedisAmount($debt) }})</td>
+                            <td></td>               
+                        </tr>
+                        <tr style='border-bottom: 1px solid;'>
+                            <td></td>
+                            <td></td>
+                            <td style='text-align: right'>{{ formatCedisAmount($results['total_stores_sales'] - $debt) }}</td>               
+                        </tr>
+                        <tr style='border-bottom: 1px solid;'>
+                            <td>Total Returnables</td>
+                            <td style='text-align: right; padding-right: 30px'>({{ formatCedisAmount($results['total_amount_returned_items']) }})</td>
+                            <td></td>               
+                        </tr>
+                        <tr style='border-bottom: 1px solid;'>
+                            <td></td>
+                            <td></td>
+                            <td style='text-align: right'>
+                                @if($balance >= 0)
+                                    {{ formatCedisAmount($balance) }}
+                                @else 
+                                    ({{ formatCedisAmount(-1 * $balance) }})
+                                @endif  
+                            </td>               
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr style='border-bottom: 2px solid;'>
+                            <th colspan='3' style='text-align: center;'><br></th>
+                        </tr>
+                    </tfoot>
+                </table>
                 
                 @break
 
-            @case('supplier')
+            @case('Supplies')
                 <!--Supplier Account Print View-->
                 {{-- <table border="0" align="center" class ="table2" style="width: 90%;">
                     <?php 

@@ -16,6 +16,13 @@ class SupplyReceived extends Model
     
     protected $guarded = [];
 
+    protected $casts = [
+        'item_id' => 'array',
+        'old_stock' => 'array',
+        'new_stock' => 'array',
+        'amount' => 'array',
+    ];
+
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
