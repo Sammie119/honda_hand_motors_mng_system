@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('rents_episodes', function (Blueprint $table) {
             $table->id('rent_id');
-            $table->string('master_id');
+            $table->bigInteger('master_id');
             $table->decimal('amount', 10, 2)->default(0.00);
             $table->string('month_year', 20);
             $table->date('rent_date');
