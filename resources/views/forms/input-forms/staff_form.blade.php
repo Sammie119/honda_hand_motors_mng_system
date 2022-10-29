@@ -24,6 +24,7 @@
                 <select class="form-control" name="position" required >
                     <option value="" disabled selected>Position</option>
                     <option value="Master" @if(isset($staff) && ($staff->position === 'Master')) selected @endif >Master</option>
+                    <option value="Associate Master" @if(isset($staff) && ($staff->position === 'Associate Master')) selected @endif >Associate Master</option>
                     <option value="Apprentice" @if(isset($staff) && ($staff->position === 'Apprentice')) selected @endif >Apprentice</option>
                 </select>
                 <label>Position</label>
