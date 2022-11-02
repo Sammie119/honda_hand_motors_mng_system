@@ -8,6 +8,7 @@
     <div class="lh-1">
         <h1 class="h5 mb-0 text-white lh-1">Supplies Received List</h1>
     </div>
+     <input type="search" class="form-control" style="width: 40%" placeholder="Search..." id="search">
     <button class="btn btn-outline-dark btn-sm float-right create" value="new_supply" data-bs-target="#getModal" data-bs-toggle="modal" title="New Supply">New Restock</button>
 </div>
 
@@ -31,7 +32,7 @@
                 <th scope="col">Action</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="employee_table">
                 @forelse ($supplies as $key => $supply)
                     @php
                         $sup = App\Models\SupplyReceived::select('supply_id', 'sup_date', 'updated_by')->where('supply_no', $supply->supply_no)->first();

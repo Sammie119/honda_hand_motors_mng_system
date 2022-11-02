@@ -8,6 +8,7 @@
     <div class="lh-1">
         <h1 class="h5 mb-0 text-white lh-1">Customers List</h1>
     </div>
+    <input type="search" class="form-control" style="width: 40%" placeholder="Search..." id="search">
     <button class="btn btn-outline-dark btn-sm float-right create" value="new_customer" data-bs-target="#getModal" data-bs-toggle="modal" title="New Customer">Add Customer</button>
 </div>
 
@@ -28,7 +29,7 @@
                 <th scope="col">Action</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="employee_table">
                 @forelse ($customers as $key => $customer)
                     <tr>
                         <td>{{ ++$key }}</td>

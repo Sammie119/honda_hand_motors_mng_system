@@ -6,7 +6,7 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Staff List</h1>
-            {{-- <input class="form-control float-right" type="search" placeholder="Search" aria-label="Search" style="width: 20%"> --}}
+            <input type="search" class="form-control" style="width: 40%" placeholder="Search..." id="search">
             <button class="btn btn-outline-dark create" value="new_staff" data-bs-target="#getModal" data-bs-toggle="modal" title="New Staff">Add Staff</button>
         </div>
 
@@ -24,7 +24,7 @@
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="employee_table">
                     @forelse ($staffs as $key => $staff)
                         <tr>
                             <td>{{ ++$key }}</td>

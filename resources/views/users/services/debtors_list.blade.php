@@ -8,6 +8,7 @@
     <div class="lh-1">
         <h1 class="h5 mb-0 text-white lh-1">Debtors List</h1>
     </div>
+     <input type="search" class="form-control" style="width: 40%" placeholder="Search..." id="search">
     <button class="btn btn-outline-dark btn-sm float-right" style="visibility: hidden">Add Expenditure</button>
 </div>
 
@@ -27,7 +28,7 @@
                 <th scope="col">Date</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="employee_table">
             @php
                 $debtors_list = [];
             @endphp
