@@ -129,7 +129,7 @@
                                                     <input class="form-control form-control-border bg-white stock" name="stock[]" type="number" value="${data.stock}" placeholder=" " style="height: 35px; padding: 0px; text-align: center" readonly>
                                                 </div>
                                                 <div class="col-md-1">
-                                                    <input class="form-control form-control-border bg-white price" name="unit_price[]" type="number" value="${data.unit_price}" placeholder=" " style="height: 35px; padding: 0px; text-align: center" readonly>
+                                                    <input class="form-control form-control-border bg-white price" name="unit_price[]" type="number" value="${data.unit_price}" placeholder=" " style="height: 35px; padding: 0px; text-align: center" required>
                                                 </div>
                                                 <div class="col-md-1">
                                                     <input type="text" class="form-control form-control-border bg-white quantity" name="quantity[]" required placeholder=" " style="height: 35px; padding: 0px; text-align: center" >

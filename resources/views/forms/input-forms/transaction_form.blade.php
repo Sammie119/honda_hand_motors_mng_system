@@ -100,7 +100,8 @@
                     <select class="form-control form-control-border bg-white stock" name="stock[]" placeholder=" " style="height: 35px; padding: 0px; text-align: center"><option>{{ $stock }}</option></select>
                 </div>
                 <div class="col-md-1">
-                    <select class="form-control form-control-border bg-white price" name="unit_price[]" placeholder=" " style="height: 35px; padding: 0px; text-align: center"><option>{{ $transaction->unit_price[$key] }}</option></select>
+                    {{-- <select class="form-control form-control-border bg-white price" name="unit_price[]" placeholder=" " style="height: 35px; padding: 0px; text-align: center"><option>{{ $transaction->unit_price[$key] }}</option></select> --}}
+                    <input type="text" value="{{ $transaction->unit_price[$key] }}" class="form-control form-control-border bg-white price" name="unit_price[]" required placeholder=" " style="height: 35px; padding: 0px; text-align: center" >
                 </div>
                 <div class="col-md-1">
                     <input type="text" value="{{ $transaction->quantity[$key] }}" class="form-control form-control-border bg-white quantity" name="quantity[]" required placeholder=" " style="height: 35px; padding: 0px; text-align: center" >
