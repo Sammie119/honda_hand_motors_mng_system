@@ -80,6 +80,7 @@ class CarServiceRequestController extends Controller
         $service->service_date = $request->service_date;
         $service->receipt_no = $receipt;//$request->receipt_no;
         $service->service_no = $service_no;//$request->service_no;
+        $service->received_by = $request->received_by;
         $service->user = Auth()->user()->user_id;
         
 
@@ -159,6 +160,7 @@ class CarServiceRequestController extends Controller
         $service->service_date = $servicereq->service_date;
         $service->receipt_no = $receipt;//$request->receipt_no;
         $service->service_no = $request->service_no;
+        $service->received_by = $request->received_by;
         $service->user = $servicereq->user;
         
 

@@ -87,6 +87,38 @@
 
             $('#getModal').on('shown.bs.modal', function () {
 
+                $('#car_no').bind('change',function(){   
+                    var car_no = $('#car_no').val();
+                    // var staff_id = document.querySelector('.staff_id').value;
+                    
+                    $.ajax({
+                        type:'GET',
+                        url:"get-car-info",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            car_no
+                            },
+                        success:function(data) {
+                            if(data.customer_id === 'No_data'){
+                                toastr.options =
+                                {
+                                "closeButton" : true,
+                                "progressBar" : true
+                                }
+                                toastr.error("Customer not registered");
+
+                                $("#car_no").val("");
+                                $("#car_model").val("");
+                            }
+                            else {
+                                $("#car_model").val(data.car_model);
+                            }
+                        }
+                    });
+                });
+
             });
 
             $(document).on('click', '.create', function(){

@@ -32,14 +32,27 @@ class AuthController extends Controller
     public function postRegistration(Request $request)
     {
         if($request->has('id')){
-            request()->validate([
-                'name' => 'required',
-                'username' => 'required|unique:users,username,'.$request->id.',user_id',
-                'mobile_no' => 'required',
-                'user_level' => 'required',
-                'department' => 'required',
-            ]);
-    
+            if(isset($request->password)){
+                request()->validate([
+                    'name' => 'required',
+                    'username' => 'required|unique:users,username,'.$request->id.',user_id',
+                    'mobile_no' => 'required',
+                    'user_level' => 'required',
+                    'department' => 'required',
+                    'password' => 'required|min:6|same:confirm_password',
+                    'confirm_password' => 'required|min:6|same:password'
+                ]);
+
+            } else {
+                request()->validate([
+                    'name' => 'required',
+                    'username' => 'required|unique:users,username,'.$request->id.',user_id',
+                    'mobile_no' => 'required',
+                    'user_level' => 'required',
+                    'department' => 'required',
+                ]);
+            }
+            
             $user = User::find($request->id);
     
             $user->update([
@@ -47,6 +60,7 @@ class AuthController extends Controller
                 'mobile_no' => $request['mobile_no'],
                 'user_level' => $request['user_level'],
                 'department' => $request['department'],
+                'password' => (isset($request->password)) ? Hash::make($request['password']) : $user->password,
             ]);
     
             return back()->with('success', 'User Updated Successfully Created!!');

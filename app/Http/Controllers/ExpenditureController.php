@@ -37,6 +37,8 @@ class ExpenditureController extends Controller
         $exp->portfolio = $request->portfolio;
         $exp->amount = $request->amount;
         $exp->exp_date = $request->exp_date;
+        $exp->engineer = $request->engineer;
+        $exp->car_no = $request->car_no;
         
         if($request->has('id')){
             $exp->updated_by = Auth()->user()->user_id;

@@ -122,11 +122,16 @@ class FormRequestController extends Controller
                             ->groupBy('customer_id', 'car_no', 'ser_charge', 'engineer', 'fault', 'service_date', 'service_no')
                             ->first();
                 $customer = Customer::where('car_no', $service->car_no)->first();
+
+                if(($service->ser_charge - $service->amount_paid) == 0){
+                    return 'Full Payment Made';
+                }
+
                 return view('forms.input-forms.service_payment_form', ['service' => $service, 'customer' => $customer]);
                 break;
 
             case 'edit_service_payment':
-                $amount = CarServiceRequest::select('amount_paid', 'service_no', 'service_id', 'updated_at')->where('service_id', $id)->first();
+                $amount = CarServiceRequest::select('amount_paid', 'service_no', 'service_id', 'updated_at', 'received_by')->where('service_id', $id)->first();
                 $service = CarServiceRequest::selectRaw("customer_id, car_no, fault, ser_charge, engineer, sum(amount_paid) as amount_paid, service_date, service_no")
                             ->where('service_no', $amount->service_no)
                             ->groupBy('customer_id', 'car_no', 'ser_charge', 'engineer', 'fault', 'service_date', 'service_no')

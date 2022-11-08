@@ -14,6 +14,32 @@
     </div>
 
     <div class="row mb-3">
+        <div class="col-6">
+            <div class="form-floating mb-3 mb-md-0">
+                <select class="form-control" name="engineer" required placeholder=" ">
+                    <option value="" selected disabled>Engineer in Charge</option>
+                    @foreach (\App\Models\Staff::orderBy('name')->where('position', 'Master')->get('name') as $value)
+                        <option @if ((isset($expenditure)) && $expenditure->engineer === $value->name) selected @endif>{{ $value->name }}</option>                        
+                    @endforeach
+                </select>
+                <label>Engineer in Charge</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating mb-3 mb-md-0">
+                <input class="form-control" value="{{ (isset($expenditure)) ? $expenditure->car_no : null }}" name="car_no" id="car_no" type="text" placeholder=" " />
+                <label>Car Number</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating mb-3 mb-md-0">
+                <input class="form-control" value="{{ (isset($expenditure->car_no)) ? \App\Models\Customer::select('car_model')->where('car_no', $expenditure->car_no)->first()->car_model : null }}" type="text" id="car_model" readonly placeholder=" " />
+                <label>Car Model</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
         <div class="col-4">
             <div class="form-floating mb-3 mb-md-0">
                 <select class="form-control" name="portfolio" required placeholder=" ">

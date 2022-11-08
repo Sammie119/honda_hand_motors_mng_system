@@ -16,7 +16,7 @@
   <div class="row">
     <div class="col-xl-3 col-md-6">
         <div class="card bg-primary text-white mb-1">
-            <div class="card-body">Primary Card</div>
+            <div class="card-body">Staff Number: <strong>12</strong></div>
             <div class="card-footer d-flex align-items-center justify-content-between">
                 <a class="small text-white stretched-link" href="#">View Details</a>
             </div>
@@ -24,25 +24,28 @@
     </div>
     <div class="col-xl-3 col-md-6">
         <div class="card bg-warning text-white mb-1">
-            <div class="card-body">Warning Card</div>
+            <div class="card-body">Registered Customers: <strong>{{ \App\Models\Customer::count() }}</strong></div>
             <div class="card-footer d-flex align-items-center justify-content-between">
+                {{-- <a class="small text-white stretched-link" href="{{ route('customers') }}">View Details</a> --}}
                 <a class="small text-white stretched-link" href="#">View Details</a>
             </div>
         </div>
     </div>
     <div class="col-xl-3 col-md-6">
         <div class="card bg-success text-white mb-1">
-            <div class="card-body">Success Card</div>
+            <div class="card-body">Services Rendered: <strong>{{ \App\Models\CarServiceRequest::where('amount_paid', 0)->count() }}</strong></div>
             <div class="card-footer d-flex align-items-center justify-content-between">
+                {{-- <a class="small text-white stretched-link" href="{{ route('services') }}">View Details</a> --}}
                 <a class="small text-white stretched-link" href="#">View Details</a>
             </div>
         </div>
     </div>
     <div class="col-xl-3 col-md-6">
         <div class="card bg-danger text-white mb-1">
-            <div class="card-body">Danger Card</div>
+            <div class="card-body">Number of Store Items: <strong>{{ \App\Models\Item::count() }}</strong></div>
             <div class="card-footer d-flex align-items-center justify-content-between">
                 <a class="small text-white stretched-link" href="#">View Details</a>
+                {{-- <a class="small text-white stretched-link" href="{{ route('items') }}">View Details</a> --}}
             </div>
         </div>
     </div>
@@ -50,34 +53,29 @@
 
   <div class="my-3 p-3 bg-body rounded shadow-sm">
     <table class="table table-striped table-hover">
-    <thead>
-        <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        </tr>
-        <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-        </tr>
-        <tr>
-        <th scope="row">3</th>
-        <td>Larry the Bird</td>
-        <td>Larry the Birdngfhgfhgfhgfhghghgb</td>
-        <td>@twitter</td>
-        </tr>
-    </tbody>
+        <thead>
+            <tr>
+                <th scope="col" colspan="5">Masters List</th>
+            </tr>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Position</th>
+                <th scope="col">Contact</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (\App\Models\Staff::where('position', 'Master')->orderBy('name')->get() as $key => $master)
+                <tr>
+                    <th scope="row">{{ ++$key }}</th>
+                    <td>{{ $master->name }}</td>
+                    <td>{{ $master->position }}</td>
+                    <td>{{ $master->mobile }}</td>
+                </tr>
+            @endforeach
+            
+        </tbody>
     </table>
   </div>
   

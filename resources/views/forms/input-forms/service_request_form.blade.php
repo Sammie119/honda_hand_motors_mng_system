@@ -108,6 +108,21 @@
         </div>
     </div>
 
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="form-floating mb-3 mb-md-0">
+                {{-- <input class="form-control" value="{{ (isset($service)) ?  : null }}" name="" type="text" required placeholder=" " /> --}}
+                <select class="form-control" name="received_by" required placeholder=" ">
+                    <option value="" selected disabled>Amount Received by</option>
+                    @foreach (\App\Models\Staff::orderBy('name')->where('position', 'Master')->orWhere('position', '=', 'Staff')->get('name') as $value)
+                        <option @if ((isset($service)) && $service->received_by === $value->name) selected @endif>{{ $value->name }}</option>                        
+                    @endforeach
+                </select>
+                <label>Amount Received by</label>
+            </div>
+        </div>
+    </div>
+
     <input type="hidden" name="customer_id" value="{{ (isset($service)) ? $service->customer_id : null }}" id="customer_id">
     
     <hr width="104%" style="margin-left: -15px; background: #bbb">

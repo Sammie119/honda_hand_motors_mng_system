@@ -14,23 +14,12 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement("INSERT INTO `staff`(`name`, `position`, `mobile`, `address`, `created_at`, `updated_at`) VALUES 
-                        ('Master welder','Associate Master','0243319194','None',now(),now()),
-                        ('master Ansah','Associate Master','0244868906','None',now(),now()),
-                        ('Master 1','Associate Master','0244952603','None',now(),now()),
-                        ('Master 2','Associate Master','0243319195','None',now(),now()),
-                        ('Master 3','Associate Master','0243236043','None',now(),now()),
-                        ('Master 4','Associate Master','00','None',now(),now())");
+        DB::statement("ALTER TABLE `expenditures` ADD `engineer` VARCHAR(255) NULL AFTER `amount`, 
+                                                ADD `car_no` VARCHAR(11) NULL AFTER `engineer`;");
 
-        DB::statement("UPDATE rents_episodes, staff
-                        SET rents_episodes.master_id = staff.staff_id
-                        WHERE rents_episodes.contact = staff.mobile
-                        AND rents_episodes.master_id = 0;");  
+        DB::statement("ALTER TABLE `car_service_requests` ADD `received_by` VARCHAR(255) NULL AFTER `receipt_no`");
 
-        DB::statement("ALTER TABLE `rents_episodes`
-                        DROP `contact`;");
-
-        DB::statement("UPDATE `rents_episodes` SET `month_year`=concat(`month_year`,', ',YEAR(`rent_date`))");
+        // DB::statement("UPDATE `rents_episodes` SET `month_year`=concat(`month_year`,', ',YEAR(`rent_date`))");
         
         // DB::statement("");  
         

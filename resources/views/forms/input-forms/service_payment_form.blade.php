@@ -97,6 +97,20 @@
             </div>
         </div>
     </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="form-floating mb-3 mb-md-0">
+                <select class="form-control" name="received_by" required placeholder=" ">
+                    <option value="" selected disabled>Amount Received by</option>
+                    @foreach (\App\Models\Staff::orderBy('name')->where('position', 'Master')->orWhere('position', '=', 'Staff')->get('name') as $value)
+                        <option @if ((isset($amount)) && $amount->received_by === $value->name) selected @endif>{{ $value->name }}</option>                        
+                    @endforeach
+                </select>
+                <label>Amount Received by</label>
+            </div>
+        </div>
+    </div>
     
     <hr width="104%" style="margin-left: -15px; background: #bbb">
 

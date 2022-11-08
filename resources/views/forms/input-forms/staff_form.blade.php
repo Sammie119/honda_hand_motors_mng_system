@@ -26,6 +26,7 @@
                     <option value="Master" @if(isset($staff) && ($staff->position === 'Master')) selected @endif >Master</option>
                     <option value="Associate Master" @if(isset($staff) && ($staff->position === 'Associate Master')) selected @endif >Associate Master</option>
                     <option value="Apprentice" @if(isset($staff) && ($staff->position === 'Apprentice')) selected @endif >Apprentice</option>
+                    <option value="Staff" @if(isset($staff) && ($staff->position === 'Staff')) selected @endif >Staff</option>
                 </select>
                 <label>Position</label>
             </div>

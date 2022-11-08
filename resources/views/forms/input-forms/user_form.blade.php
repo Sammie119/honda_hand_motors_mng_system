@@ -45,22 +45,22 @@
         </div>
     </div>
 
-    @empty($user)
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" type="password" name="password" required placeholder=" " />
-                    <label>Password</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" type="password" name="confirm_password" required placeholder=" " />
-                    <label>Confirm Password</label>
-                </div>
+    {{-- @empty($user) --}}
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="form-floating mb-3 mb-md-0">
+                <input class="form-control" type="password" name="password" {{ (isset($user)) ? null : 'required' }} placeholder=" " />
+                <label>Password</label>
             </div>
         </div>
-    @endempty
+        <div class="col-md-6">
+            <div class="form-floating mb-3 mb-md-0">
+                <input class="form-control" type="password" name="confirm_password" {{ (isset($user)) ? null : 'required' }} placeholder=" " />
+                <label>Confirm Password</label>
+            </div>
+        </div>
+    </div>
+    {{-- @endempty --}}
 
     <hr width="104%" style="margin-left: -15px; background: #bbb">
 
