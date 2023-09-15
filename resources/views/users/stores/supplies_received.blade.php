@@ -37,26 +37,29 @@
                     @php
                         $sup = App\Models\SupplyReceived::select('supply_id', 'sup_date', 'updated_by')->where('supply_no', $supply->supply_no)->first();
                     @endphp
-                    <tr>
-                        <td>{{ ++$key }}</td>
-                        <td>{{ $supply->supplier->supplier_name }}</td>
-                        {{-- <td>{{ $supply->item_name->item }}</td> --}}
-                        {{-- <td>{{ $supply->new_stock }}</td> --}}
-                        <td>{{ formatCedisAmount($supply->total_amount) }}</td>
-                        <td>{{ formatCedisAmount($supply->paid) }}</td>
-                        <td>{{ formatCedisAmount($supply->total_amount - $supply->paid) }}</td>
-                        <td>{{ $supply->receipt_no }}</td>
-                        <td>{{ formatDate($sup->sup_date) }}</td>
-                        <td>{{ getUsername($sup->updated_by) }}</td>
-                        <td>
-                            <div class="btn-group">
-                                <button class="btn btn-secondary btn-sm pay" value="{{ $supply->supply_no }}" data-bs-target="#getModal" data-bs-toggle="modal" title="Payment">Pay</button>
-                                <button class="btn btn-info btn-sm view" value="{{ $supply->supply_no }}" data-bs-target="#getModal" data-bs-toggle="modal" title="View Details">View</button>
-                                <button class="btn btn-success btn-sm edit" value="{{ $sup->supply_id }}" data-bs-target="#getModal" data-bs-toggle="modal" title="Edit Details">Edit</button>
-                                <button class="btn btn-danger btn-sm delete" value="{{ $sup->supply_id }}" data-bs-toggle="modal" data-bs-target="#comfirm-delete" role="button">Del</button>
-                            </div>
-                        </td>
-                    </tr>
+                    @if(!empty($supply->supplier->supplier_name))
+                        <tr>
+                            <td>{{ ++$key }}</td>
+                            <td>{{ $supply->supplier->supplier_name }}</td>
+                            {{-- <td>{{ $supply->item_name->item }}</td> --}}
+                            {{-- <td>{{ $supply->new_stock }}</td> --}}
+                            <td>{{ formatCedisAmount($supply->total_amount) }}</td>
+                            <td>{{ formatCedisAmount($supply->paid) }}</td>
+                            <td>{{ formatCedisAmount($supply->total_amount - $supply->paid) }}</td>
+                            <td>{{ $supply->receipt_no }}</td>
+                            <td>{{ formatDate($sup->sup_date) }}</td>
+                            <td>{{ getUsername($sup->updated_by) }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-secondary btn-sm pay" value="{{ $supply->supply_no }}" data-bs-target="#getModal" data-bs-toggle="modal" title="Payment">Pay</button>
+                                    <button class="btn btn-info btn-sm view" value="{{ $supply->supply_no }}" data-bs-target="#getModal" data-bs-toggle="modal" title="View Details">View</button>
+                                    <button class="btn btn-success btn-sm edit" value="{{ $sup->supply_id }}" data-bs-target="#getModal" data-bs-toggle="modal" title="Edit Details">Edit</button>
+                                    <button class="btn btn-danger btn-sm delete" value="{{ $sup->supply_id }}" data-bs-toggle="modal" data-bs-target="#comfirm-delete" role="button">Del</button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endif
+                    
                 @empty
                     <tr>
                         <td colspan="15">No data Found</td>

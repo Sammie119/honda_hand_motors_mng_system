@@ -15,7 +15,7 @@
         <div class="col-md-4">
             <div class="form-floating">
                 @php
-                    $invoice = \App\Models\StoresTransaction::select('invoice_no')->distinct('invoice_no')->count() + 1;
+                    $invoice = Illuminate\Support\Facades\DB::table('stores_transactions')->select('invoice_no')->distinct('invoice_no')->orderByDesc('invoice_no')->first()->invoice_no + 1;
                 @endphp
                 <input class="form-control" value="{{ (isset($transaction)) ? $transaction->invoice_no : sprintf("%010d", $invoice) }}" name="invoice_no" type="number" readonly placeholder=" " />
                 <label>Invoice No.</label>
